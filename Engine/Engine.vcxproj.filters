@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{9C6AA017-8837-FB22-B150-E9CA9D7C30B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform">
+      <UniqueIdentifier>{90F210A6-FC08-0F3C-4580-9A5DB1D5DFC3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\opengl">
+      <UniqueIdentifier>{24325681-1057-A501-39A2-8A912526A41F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\eng.h" />
+    <ClInclude Include="src\engpch.h" />
+    <ClInclude Include="src\renderer\Camera.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Renderer2D.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\platform\opengl\Buffer.h">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\platform\opengl\RenderingAPI.h">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\platform\opengl\VertexArray.h">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\platform\opengl\Window.h" />
+    <ClInclude Include="src\renderer\platform\opengl\VertexBuffer.h" />
+    <ClInclude Include="src\renderer\platform\opengl\IndexBuffer.h" />
+    <ClInclude Include="src\renderer\platform\opengl\Shader.h" />
+    <ClInclude Include="AssetManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\engpch.cpp" />
+    <ClCompile Include="src\renderer\Camera.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Renderer2D.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\platform\opengl\Buffer.cpp">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\platform\opengl\RenderingAPI.cpp">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\platform\opengl\VertexArray.cpp">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\glad.c" />
+    <ClCompile Include="src\renderer\platform\opengl\Window.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\VertexBuffer.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\IndexBuffer.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\Shader.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="src\Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\opengl\baseShader.frag" />
+    <None Include="assets\shaders\opengl\baseShader.vert" />
+  </ItemGroup>
+</Project>

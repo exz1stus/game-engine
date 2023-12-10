@@ -11,16 +11,22 @@ workspace "Engine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
---Include dirs relarive to root folder (solution direction)
+--Include dirs relative to root folder (solution direction)
 IncludeDir = {}
-IncludeDir["GLFW"] = "Engine/vendor/GLFW/include"
+IncludeDir["GLFW"] = "Engine/vendor/glfw/include"
+IncludeDir["glad"] = "Engine/vendor/glad"
+
+
 
 --GLFW prj
-include "Engine/vendor/GLFW"
+include "Engine/vendor/glfw"
+
+
 
 project "Engine"
 	location "Engine"
-	kind "SharedLib"
+	kind "StaticLib"
+	--kind "SharedLib"
 	language "C++"
 
 	targetdir("bin/" .. outputdir .."/%{prj.name}")
@@ -37,9 +43,14 @@ project "Engine"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include;",
-		"%{prj.name}/src;",
-		"%{IncludeDir.GLFW}"
+		"%{prj.name}/dependecies/include",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/src",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}"
+	}
+	libdirs{
+		"%{prj.name}/dependencies/lib"
 	}
 
 	links
@@ -56,12 +67,6 @@ project "Engine"
 		defines
 		{
 			"PLATFORM_WINDOWS;",
-			"BUILD_DLL;"
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" ..outputdir.. "/Sandbox")
 		}
 
 	filter "configurations:Debug"
@@ -70,9 +75,8 @@ project "Engine"
 	filter "configurations:Release"
 		defines "ENG_RELEASE"
 		optimize "On"
-	filter "configurations:Dist"
-		defines "ENG_DIST"
-		optimize "On"
+
+
 
 project "App"
 	location "App"
@@ -91,7 +95,20 @@ project "App"
 	includedirs
 	{
 		"Engine/vendor/spdlog/include",
-		"Engine/src"
+		"Engine/src/vendor/",
+		"Engine/src",
+		"%{IncludeDir.glad}"
+	}
+
+	libdirs
+	{
+		"%{prj.name}/dependencies/lib",
+		"Engine/bin/outputdir/"
+	}
+
+	ignoredefaultlibraries
+	{
+		"LIBCMTD"
 	}
 
 	links
