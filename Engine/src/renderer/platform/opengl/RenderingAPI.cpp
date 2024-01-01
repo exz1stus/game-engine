@@ -51,8 +51,7 @@ namespace eng
 
 	void RenderingAPI::DrawIndexed(const VertexArray& vao)
 	{
-		vao.Bind();
-		vao.GetIndexBuffer()->Bind();	//to remove
+		vao.GetIndexBuffer()->Bind();
 		glDrawElements(GL_TRIANGLES, vao.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 	void RenderingAPI::PollEvents()

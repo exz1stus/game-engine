@@ -18,8 +18,7 @@ namespace eng
 		}
 		else
 		{
-			_projection = glm::perspective(glm::radians(_fov), (float)right / (float)top, 0.1f, 100.0f);
-
+			_projection = glm::perspective(glm::radians(_fov), right / top, -1.0f, 100.0f);
 			return;
 		}
 	}

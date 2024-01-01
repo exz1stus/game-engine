@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;vendor\benchmark\include;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -79,7 +79,7 @@
       <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;vendor\benchmark\include;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -99,47 +99,43 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="src\renderer\platform\opengl\IndexBuffer.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\EntryPoint.h" />
     <ClInclude Include="src\eng.h" />
     <ClInclude Include="src\engpch.h" />
+    <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\renderer\Camera.h" />
-    <ClInclude Include="src\renderer\platform\opengl\Shader.h" />
     <ClInclude Include="src\renderer\Renderer2D.h" />
     <ClInclude Include="src\renderer\platform\opengl\Buffer.h" />
+    <ClInclude Include="src\renderer\platform\opengl\IndexBuffer.h" />
     <ClInclude Include="src\renderer\platform\opengl\RenderingAPI.h" />
+    <ClInclude Include="src\renderer\platform\opengl\Shader.h" />
     <ClInclude Include="src\renderer\platform\opengl\VertexArray.h" />
-    <ClInclude Include="src\renderer\platform\opengl\Window.h" />
     <ClInclude Include="src\renderer\platform\opengl\VertexBuffer.h" />
+    <ClInclude Include="src\renderer\platform\opengl\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="src\renderer\platform\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\engpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\misc\CameraController.cpp" />
+    <ClCompile Include="src\misc\Test.cpp" />
     <ClCompile Include="src\renderer\Camera.cpp" />
-    <ClCompile Include="src\renderer\platform\opengl\Shader.cpp" />
     <ClCompile Include="src\renderer\Renderer2D.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\Buffer.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\RenderingAPI.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\Shader.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\VertexArray.cpp" />
-    <ClCompile Include="src\Test.cpp" />
-    <ClCompile Include="src\vendor\glad.c" />
-    <ClCompile Include="src\renderer\platform\opengl\Window.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\VertexBuffer.cpp" />
+    <ClCompile Include="src\renderer\platform\opengl\Window.cpp" />
+    <ClCompile Include="src\vendor\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\glfw\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\opengl\baseShader.frag" />
-    <None Include="assets\shaders\opengl\baseShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

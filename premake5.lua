@@ -45,6 +45,7 @@ project "Engine"
 	{
 		"%{prj.name}/dependecies/include",
 		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/benchmark/include",
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}"

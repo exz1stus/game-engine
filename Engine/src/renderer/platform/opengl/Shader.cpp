@@ -21,9 +21,15 @@ namespace eng
 	{
 		glUseProgram(0);
 	}
+	void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
+	{
+		GLint location = GetUniformLocation(name);
+		glUniform4f(location, value.x, value.y, value.z, value.w);
+
+	}
 	void Shader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
-		GLint location = glGetUniformLocation(_rendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 
