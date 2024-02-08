@@ -1,42 +1,73 @@
-#pragma once
+﻿#pragma once
 #include <functional>
 
 namespace eng
 {
-	template<typename T , typename... Args>
+	template<typename... Args>
 	class Event
 	{
-		using EventHandler = std::function<T(Args...)>;
+		using EventListener = std::function<void(Args...)>;
 
 	public:
-
 		Event() = default;
-		Event(const EventHandler& handler)
+		Event(const EventListener& listener)
 		{
-			operator+=(handler);
+			Subscribe(listener);
 		}
-
 		~Event() = default;
 
-		void operator+=(const EventHandler& handler)
+		void Subscribe(const EventListener& listener)
 		{
-			_listeners.push_back(handler);
+			_listeners.push_back(listener);
 		}
-		void operator-=(const EventHandler& handler)
-		{
-			//_listeners.erase(std::remove(_listeners.begin(), _listeners.end(), handler), _listeners.end());
-		}	
-		void operator()(Args... args) { Invoke(args...); }
 
-		void Invoke(Args... args)
+		template<typename T>
+		void Bind(void (T::* method)(Args...), T* object)
 		{
-			for (const auto& handler : _listeners)
+			Subscribe(static_cast<EventListener>([method, object](Args... args) {  (object->*method)(args...); }));
+		}
+
+		void Unsubscribe(const EventListener& listener)
+		{
+			auto it = std::find_if(_listeners.begin(), _listeners.end(), [&](const EventListener& el) {
+				return el.target<void(Args...)>() == listener.target<void(Args...)>();
+				});
+
+			if (it != _listeners.end())
 			{
-				handler(args...);
+				_listeners.erase(it);
 			}
 		}
 
+		template<typename T>
+		void Unbind(void (T::* method)(Args...), T* object)
+		{
+			auto target = [method, object](Args... args) { (object->*method)(args...); };
+
+			Unsubscribe(target);
+		}
+
+		void Invoke(Args... args) const
+		{
+			for (const auto& listener : _listeners)
+			{
+				listener(args...);
+			}
+		}
+
+		void operator+=(const EventListener& listener)
+		{
+			Subscribe(listener);
+		}
+
+		void operator-=(const EventListener& listener)
+		{
+			Unsubscribe(listener);
+		}	
+
+		void operator()(Args... args) { Invoke(args...); }
+
 	private:
-		std::vector<EventHandler> _listeners;
+		std::vector<EventListener> _listeners;
 	};
 }

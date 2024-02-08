@@ -21,8 +21,6 @@ IncludeDir["glad"] = "Engine/vendor/glad"
 --GLFW prj
 include "Engine/vendor/glfw"
 
-
-
 project "Engine"
 	location "Engine"
 	kind "StaticLib"
@@ -32,8 +30,8 @@ project "Engine"
 	targetdir("bin/" .. outputdir .."/%{prj.name}")
 	objdir("bin-int/" .. outputdir .."/%{prj.name}")
 
-	pchheader "engpch.h"
-	pchsource "Engine/src/engpch.cpp"
+	--pchheader "engpch.h"
+	--pchsource "Engine/src/engpch.cpp"
 
 	files
 	{
@@ -46,6 +44,7 @@ project "Engine"
 		"%{prj.name}/dependecies/include",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/vendor/benchmark/include",
+		"%{prj.name}/vendor/glm",
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}"

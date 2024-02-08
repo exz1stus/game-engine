@@ -1,3 +1,4 @@
+#include "engpch.h"
 #include "IndexBuffer.h"
 
 eng::IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)

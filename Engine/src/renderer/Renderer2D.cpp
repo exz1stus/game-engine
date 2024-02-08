@@ -3,13 +3,15 @@
 #include "platform/opengl/RenderingAPI.h"
 #include "renderer/platform/opengl/Shader.h"
 
+#include "misc/Utilities.h"
+
 namespace eng
 {
 	std::unique_ptr<Camera> Renderer2D::_cam;
 
 	struct QuadVertex
 	{
-		glm::vec3 Position;
+		glm::vec3 Position= {0,0,0};
 	};
 
 	struct RendererData
@@ -41,6 +43,7 @@ namespace eng
 		RenderingAPI::Init();
 
 		_cam = std::make_unique<Camera>(-350, 350, -300, 300, true);
+		//_cam = std::make_unique<Camera>(0, 700, 0, 600, false);
 
 		renderData.quadVertecies[0] = { {	-0.5f, -0.5f, 0.0f	} };//,	{0.0f, 0.0f} };
 		renderData.quadVertecies[1] = { {	0.5f, -0.5f	, 0.0f	} };//, { 1.0f, 0.0f } };
@@ -64,18 +67,20 @@ namespace eng
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
-	
+		float rotation = 0.0f;
 
+		/*_cam->SetRotation(glm::vec3(0, 0, 0));
+		_cam->SetPosition(glm::vec3(100, 0, 0));*/
 		
-		static float rotation = 0.0f;
-		rotation += 1.1f;
-
 		glm::mat4 transform = glm::translate(
-			glm::mat4(1.0f), glm::vec3(position, 1.0f))
+			glm::mat4(1.0f), glm::vec3(position, 0.0f))
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		renderData.shader->Bind();
+		
+		//printMatrix(_cam->GetViewProjectionMatrix() * transform);
+
 		renderData.shader->SetMat4("u_MVP", _cam->GetViewProjectionMatrix() * transform);
 		renderData.shader->SetFloat4("u_Color", color);
 

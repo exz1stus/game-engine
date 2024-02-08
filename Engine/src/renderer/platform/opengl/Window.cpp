@@ -1,5 +1,6 @@
 #include "engpch.h"
 #include "Window.h"
+#include "OpenGLCallbacks.h"
 
 namespace eng
 {
@@ -8,6 +9,7 @@ namespace eng
 		_width(width), _height(height),
 		_glWindow(glfwCreateWindow(_width, _height, "game engine", NULL, NULL))
 	{
+		glfwSetWindowSizeCallback(_glWindow, WindowResizedCallback);
 	}
 
 	Window::~Window()

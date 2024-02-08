@@ -1,5 +1,6 @@
 #include "engpch.h"
 #include "RenderingAPI.h"
+#include "renderer/platform/RenderingEvents.h"
 namespace eng
 {
 	std::unique_ptr<Window> RenderingAPI::_window;
@@ -29,7 +30,7 @@ namespace eng
 			std::cout << "glad init failed" << std::endl;
 		}
 		
-		SetViewport(0, 0, 700, 600);
+		SetViewport(700, 600);
 
 		//debug messages
 		glEnable(GL_DEBUG_OUTPUT);
@@ -42,11 +43,14 @@ namespace eng
 		//pixel blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
 
-	void RenderingAPI::SetViewport(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+		glfwSwapInterval(1);
+		
+		RenderingEvents::OnWindowResized += SetViewport;
+	}
+	void RenderingAPI::SetViewport(uint16_t width, uint16_t height)
 	{
-		glViewport(x, y, width, height);
+		glViewport(0, 0, width, height);
 	}
 
 	void RenderingAPI::DrawIndexed(const VertexArray& vao)

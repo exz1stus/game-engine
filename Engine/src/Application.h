@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 namespace eng
 {
 	class Application
@@ -9,6 +11,7 @@ namespace eng
 		void Init();
 		void MainLoop();
 	private:
+		 
 	};
 	Application* CreateApplication();
 }

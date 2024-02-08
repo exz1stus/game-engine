@@ -25,16 +25,28 @@
     <ClInclude Include="src\events\Event.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="src\misc\Test.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\Utilities.h">
+      <Filter>misc</Filter>
+    </ClInclude>
     <ClInclude Include="src\renderer\Camera.h">
       <Filter>renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\Renderer2D.h">
       <Filter>renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\platform\RenderingEvents.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
     <ClInclude Include="src\renderer\platform\opengl\Buffer.h">
       <Filter>renderer\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\platform\opengl\IndexBuffer.h">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\platform\opengl\OpenGLCallbacks.h">
       <Filter>renderer\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\platform\opengl\RenderingAPI.h">
@@ -68,10 +80,16 @@
     <ClCompile Include="src\renderer\Renderer2D.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\platform\RenderingEvents.cpp">
+      <Filter>renderer\platform</Filter>
+    </ClCompile>
     <ClCompile Include="src\renderer\platform\opengl\Buffer.cpp">
       <Filter>renderer\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\platform\opengl\IndexBuffer.cpp">
+      <Filter>renderer\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\platform\opengl\OpenGLCallbacks.cpp">
       <Filter>renderer\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\platform\opengl\RenderingAPI.cpp">
