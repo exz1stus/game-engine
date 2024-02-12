@@ -19,7 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\ApplicationEvents.h" />
     <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\GameTime.h" />
     <ClInclude Include="src\eng.h" />
     <ClInclude Include="src\engpch.h" />
     <ClInclude Include="src\events\Event.h">
@@ -37,8 +39,8 @@
     <ClInclude Include="src\renderer\Renderer2D.h">
       <Filter>renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\platform\RenderingEvents.h">
-      <Filter>renderer\platform</Filter>
+    <ClInclude Include="src\renderer\RenderingEvents.h">
+      <Filter>renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\platform\opengl\Buffer.h">
       <Filter>renderer\platform\opengl</Filter>
@@ -67,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\ApplicationEvents.cpp" />
+    <ClCompile Include="src\GameTime.cpp" />
     <ClCompile Include="src\engpch.cpp" />
     <ClCompile Include="src\misc\CameraController.cpp">
       <Filter>misc</Filter>
@@ -80,8 +84,8 @@
     <ClCompile Include="src\renderer\Renderer2D.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\platform\RenderingEvents.cpp">
-      <Filter>renderer\platform</Filter>
+    <ClCompile Include="src\renderer\RenderingEvents.cpp">
+      <Filter>renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\platform\opengl\Buffer.cpp">
       <Filter>renderer\platform\opengl</Filter>
@@ -107,6 +111,5 @@
     <ClCompile Include="src\renderer\platform\opengl\Window.cpp">
       <Filter>renderer\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\vendor\glad.c" />
   </ItemGroup>
 </Project>

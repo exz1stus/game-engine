@@ -80,8 +80,9 @@ namespace eng
 		renderData.shader->Bind();
 		
 		//printMatrix(_cam->GetViewProjectionMatrix() * transform);
+		//glm::mat4 proj = glm::perspective(glm::radians(45.0f), 700.0f / 600.0f, -1.0f, 100.0f);
 
-		renderData.shader->SetMat4("u_MVP", _cam->GetViewProjectionMatrix() * transform);
+		renderData.shader->SetMat4("u_MVP", _cam->GetProjectionMatrix() * transform);
 		renderData.shader->SetFloat4("u_Color", color);
 
 		RenderingAPI::DrawIndexed(*renderData.vao);

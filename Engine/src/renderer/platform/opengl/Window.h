@@ -12,6 +12,7 @@ namespace eng
 
 		void MakeCurrentContext();
 		void SwapBuffers();
+		bool IsClosed() { return glfwWindowShouldClose(_glWindow); }
 
 		uint32_t GetWidth() const { return _width; }
 		uint32_t GetHeight() const { return _height; }

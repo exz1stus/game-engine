@@ -1,4 +1,5 @@
-#include "engpch.h"
+//#include "engpch.h"
+#include "eng.h"
 #include "App.h"
 
 eng::Application* eng::CreateApplication()

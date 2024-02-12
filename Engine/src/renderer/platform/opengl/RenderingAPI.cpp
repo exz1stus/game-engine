@@ -1,6 +1,6 @@
 #include "engpch.h"
 #include "RenderingAPI.h"
-#include "renderer/platform/RenderingEvents.h"
+#include "renderer/RenderingEvents.h"
 namespace eng
 {
 	std::unique_ptr<Window> RenderingAPI::_window;
@@ -34,6 +34,7 @@ namespace eng
 
 		//debug messages
 		glEnable(GL_DEBUG_OUTPUT);
+
 		//glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(MessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
@@ -60,6 +61,7 @@ namespace eng
 	}
 	void RenderingAPI::PollEvents()
 	{
+		if (_window->IsClosed()) RenderingEvents::OnWindowClosed(); 
 		glfwPollEvents();
 	}
 	void RenderingAPI::SwapBuffers()

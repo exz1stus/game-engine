@@ -54,10 +54,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;vendor\benchmark\include;vendor\glm;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies\include;vendor\spdlog\include;vendor\benchmark\include;vendor\glad\include;vendor\glm;src;Engine\vendor\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -68,16 +69,17 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\glad\bin\Debug-windows-x86_64\glad\glad.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dependecies\include;vendor\spdlog\include;vendor\benchmark\include;vendor\glm;src;vendor\glfw\include;vendor\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies\include;vendor\spdlog\include;vendor\benchmark\include;vendor\glad\include;vendor\glm;src;Engine\vendor\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -92,13 +94,15 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\glad\bin\Release-windows-x86_64\glad\glad.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\ApplicationEvents.h" />
     <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\GameTime.h" />
     <ClInclude Include="src\eng.h" />
     <ClInclude Include="src\engpch.h" />
     <ClInclude Include="src\events\Event.h" />
@@ -106,7 +110,7 @@
     <ClInclude Include="src\misc\Utilities.h" />
     <ClInclude Include="src\renderer\Camera.h" />
     <ClInclude Include="src\renderer\Renderer2D.h" />
-    <ClInclude Include="src\renderer\platform\RenderingEvents.h" />
+    <ClInclude Include="src\renderer\RenderingEvents.h" />
     <ClInclude Include="src\renderer\platform\opengl\Buffer.h" />
     <ClInclude Include="src\renderer\platform\opengl\IndexBuffer.h" />
     <ClInclude Include="src\renderer\platform\opengl\OpenGLCallbacks.h" />
@@ -118,12 +122,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\engpch.cpp" />
+    <ClCompile Include="src\ApplicationEvents.cpp" />
+    <ClCompile Include="src\GameTime.cpp" />
+    <ClCompile Include="src\engpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\misc\CameraController.cpp" />
     <ClCompile Include="src\misc\Test.cpp" />
     <ClCompile Include="src\renderer\Camera.cpp" />
     <ClCompile Include="src\renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\renderer\platform\RenderingEvents.cpp" />
+    <ClCompile Include="src\renderer\RenderingEvents.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\Buffer.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\OpenGLCallbacks.cpp" />
@@ -132,7 +140,6 @@
     <ClCompile Include="src\renderer\platform\opengl\VertexArray.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\VertexBuffer.cpp" />
     <ClCompile Include="src\renderer\platform\opengl\Window.cpp" />
-    <ClCompile Include="src\vendor\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\glfw\GLFW.vcxproj">

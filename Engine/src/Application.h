@@ -10,8 +10,10 @@ namespace eng
 
 		void Init();
 		void MainLoop();
+		void Quit();
 	private:
-		 
+		bool _isRunning = true;
+		void SubsribeStaticClasses();
 	};
 	Application* CreateApplication();
 }
