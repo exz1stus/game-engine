@@ -3,6 +3,8 @@
 #include "renderer/Renderer2D.h"
 #include "renderer/RenderingEvents.h"
 #include "ApplicationEvents.h"
+#include "debug/imgui/ImguiManager.h"
+#include "GameTime.h"
 
 namespace eng
 {
@@ -20,8 +22,10 @@ namespace eng
 
 	void Application::SubsribeStaticClasses()
 	{
+		ApplicationEvents::OnInit += GameTime::Init;
 		ApplicationEvents::OnInit += Renderer2D::Init;
-
+		ApplicationEvents::OnInit += ImguiManager::Init;
+	 
 		RenderingEvents::OnWindowClosed.Bind(&Application::Quit, this);
 	}
 	void Application::MainLoop()

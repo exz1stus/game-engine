@@ -7,5 +7,7 @@ namespace eng
 	{
 		static Event<uint16_t, uint16_t> OnWindowResized;
 		static Event<> OnWindowClosed;
+
+		static Event<> OnDrawUI;
 	};
 }

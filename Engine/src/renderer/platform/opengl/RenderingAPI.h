@@ -14,7 +14,10 @@ namespace eng
 		static void DrawIndexed(const VertexArray& vao);
 		static void PollEvents();
 		static void SwapBuffers();
+
+		static void SetVSync(bool vsync);
 	private:
+		static void WaitForNextFrame();
 		static std::unique_ptr<Window> _window;
 	};
 }

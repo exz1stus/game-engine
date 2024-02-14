@@ -23,7 +23,6 @@ project "App"
 
 	libdirs
 	{
-		"dependencies/lib",
 		"%{wks.location}/Engine/bin/outputdir/"
 	}
 

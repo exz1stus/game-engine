@@ -1,6 +1,9 @@
 #include "engpch.h"
 #include "RenderingAPI.h"
 #include "renderer/RenderingEvents.h"
+#include "renderer/RenderConfig.h"
+#include "GameTime.h"
+
 namespace eng
 {
 	std::unique_ptr<Window> RenderingAPI::_window;
@@ -20,7 +23,9 @@ namespace eng
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-		_window = std::make_unique<Window>(700, 600);
+		auto cfg = GetRenderConfig();
+
+		_window = std::make_unique<Window>(cfg.WindowWidth, cfg.WindowHeight);
 
 		_window->MakeCurrentContext();
 
@@ -30,7 +35,7 @@ namespace eng
 			std::cout << "glad init failed" << std::endl;
 		}
 		
-		SetViewport(700, 600);
+		SetViewport(cfg.WindowWidth, cfg.WindowHeight);
 
 		//debug messages
 		glEnable(GL_DEBUG_OUTPUT);
@@ -45,7 +50,7 @@ namespace eng
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glfwSwapInterval(1);
+		SetVSync(cfg.Vsync);
 		
 		RenderingEvents::OnWindowResized += SetViewport;
 	}
@@ -67,5 +72,21 @@ namespace eng
 	void RenderingAPI::SwapBuffers()
 	{
 		_window->SwapBuffers();
+		//WaitForNextFrame();
+	}
+	void RenderingAPI::WaitForNextFrame()
+	{
+		double deltaTime = GameTime::GetDeltaTime();
+
+		double targetFrameTime = 1.0 / 60.0; // 60 FPS
+		if (deltaTime < targetFrameTime)
+		{
+			double sleepTime = targetFrameTime - deltaTime;
+			GameTime::Sleep(sleepTime);
+		}
+	}
+	void RenderingAPI::SetVSync(bool vsync)
+	{
+		glfwSwapInterval(vsync);
 	}
 }

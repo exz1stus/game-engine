@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="debug">
+      <UniqueIdentifier>{2CA5490F-98B9-71C0-613B-1520CD0E6EF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug\imgui">
+      <UniqueIdentifier>{96E37F9B-0299-F890-8B8D-F267F741EF94}</UniqueIdentifier>
+    </Filter>
     <Filter Include="events">
       <UniqueIdentifier>{5A9D08FC-463F-33D2-2FFA-46261B3BBA22}</UniqueIdentifier>
     </Filter>
@@ -22,6 +28,9 @@
     <ClInclude Include="src\ApplicationEvents.h" />
     <ClInclude Include="src\EntryPoint.h" />
     <ClInclude Include="src\GameTime.h" />
+    <ClInclude Include="src\debug\imgui\ImguiManager.h">
+      <Filter>debug\imgui</Filter>
+    </ClInclude>
     <ClInclude Include="src\eng.h" />
     <ClInclude Include="src\engpch.h" />
     <ClInclude Include="src\events\Event.h">
@@ -66,11 +75,15 @@
     <ClInclude Include="src\renderer\platform\opengl\Window.h">
       <Filter>renderer\platform\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\RenderConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationEvents.cpp" />
     <ClCompile Include="src\GameTime.cpp" />
+    <ClCompile Include="src\debug\imgui\ImguiManager.cpp">
+      <Filter>debug\imgui</Filter>
+    </ClCompile>
     <ClCompile Include="src\engpch.cpp" />
     <ClCompile Include="src\misc\CameraController.cpp">
       <Filter>misc</Filter>
@@ -111,5 +124,6 @@
     <ClCompile Include="src\renderer\platform\opengl\Window.cpp">
       <Filter>renderer\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\RenderConfig.cpp" />
   </ItemGroup>
 </Project>

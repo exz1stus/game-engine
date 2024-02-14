@@ -19,5 +19,6 @@ group "Core"
 	include "Engine"
 
 group "Dependencies"
+	include "Engine/vendor/imgui"
 	include "Engine/vendor/glfw"
 	include "Engine/vendor/glad"

@@ -1,7 +1,10 @@
 #include "engpch.h"
 #include "Renderer2D.h"
+#include "RenderingEvents.h"
+#include "RenderConfig.h"
+
 #include "platform/opengl/RenderingAPI.h"
-#include "renderer/platform/opengl/Shader.h"
+#include "platform/opengl/Shader.h"
 
 #include "misc/Utilities.h"
 
@@ -78,11 +81,8 @@ namespace eng
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		renderData.shader->Bind();
-		
-		//printMatrix(_cam->GetViewProjectionMatrix() * transform);
-		//glm::mat4 proj = glm::perspective(glm::radians(45.0f), 700.0f / 600.0f, -1.0f, 100.0f);
 
-		renderData.shader->SetMat4("u_MVP", _cam->GetProjectionMatrix() * transform);
+		renderData.shader->SetMat4("u_MVP", _cam->GetViewProjectionMatrix() * transform);
 		renderData.shader->SetFloat4("u_Color", color);
 
 		RenderingAPI::DrawIndexed(*renderData.vao);
@@ -98,6 +98,8 @@ namespace eng
 	}
 	void Renderer2D::Flush()
 	{
+		RenderingEvents::OnDrawUI();
+
 		RenderingAPI::SwapBuffers();
 		RenderingAPI::PollEvents();
 

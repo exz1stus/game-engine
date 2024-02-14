@@ -17,23 +17,26 @@ project "Engine"
 
 	includedirs
 	{
-		"dependencies/include",
 		"vendor/spdlog/include",
 		"vendor/benchmark/include",
+		"vendor/glfw/include",
 		"vendor/glad/include",
 		"vendor/glm",
+		"vendor/imgui",
+
 		"src",
-		"%{IncludeDir.GLFW}",
 	}
 	libdirs{
-		"dependencies/lib"
+		"vendor"
 	}
 
 	links
 	{
 		"GLFW",
 		"opengl32.lib",
-		"vendor/glad/bin/" .. outputdir .. "/glad/glad.lib"
+		"glad",
+		"GLFW",
+		"ImGui",
 	}
 
 	filter "system:windows"
