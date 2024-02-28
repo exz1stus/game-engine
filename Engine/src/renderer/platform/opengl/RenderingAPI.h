@@ -11,7 +11,7 @@ namespace eng
 	public:
 		static void Init();
 		static void SetViewport(uint16_t width, uint16_t height);
-		static void DrawIndexed(const VertexArray& vao);
+		static void DrawIndexed(const VertexArray& vao, const uint32_t indexCount = 0);
 		static void PollEvents();
 		static void SwapBuffers();
 

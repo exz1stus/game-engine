@@ -26,11 +26,6 @@ project "App"
 		"%{wks.location}/Engine/bin/outputdir/"
 	}
 
-	ignoredefaultlibraries
-	{
-		"LIBCMTD"
-	}
-
 	links
 	{
 		"Engine"

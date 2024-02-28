@@ -1,5 +1,4 @@
 #pragma once
-#include "engpch.h"
 #include <glad.h>
 #include "GLFW/glfw3.h"
 namespace eng

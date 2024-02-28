@@ -1,10 +1,12 @@
 #include "engpch.h"
 #include "Application.h"
 #include "renderer/Renderer2D.h"
+#include "renderer/platform/opengl/RenderingAPI.h"
 #include "renderer/RenderingEvents.h"
 #include "ApplicationEvents.h"
 #include "debug/imgui/ImguiManager.h"
 #include "GameTime.h"
+#include "AssetManager.h"
 
 namespace eng
 {
@@ -16,13 +18,15 @@ namespace eng
 	}
 	void Application::Init()
 	{
-		SubsribeStaticClasses();
+		SubscribeStaticClasses();
 		ApplicationEvents::OnInit();
 	}
 
-	void Application::SubsribeStaticClasses()
+	void Application::SubscribeStaticClasses()
 	{
 		ApplicationEvents::OnInit += GameTime::Init;
+		ApplicationEvents::OnInit += RenderingAPI::Init;
+		ApplicationEvents::OnInit += AssetManager::Init;
 		ApplicationEvents::OnInit += Renderer2D::Init;
 		ApplicationEvents::OnInit += ImguiManager::Init;
 	 

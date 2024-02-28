@@ -12,8 +12,9 @@ namespace eng
 	public:
 		static void Init();
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
+		//static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, const Texture2D& texture);
 
-		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(/*const Camera& camera*/);
 		static void EndScene();
 		static void Flush();
 

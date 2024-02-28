@@ -59,10 +59,11 @@ namespace eng
 		glViewport(0, 0, width, height);
 	}
 
-	void RenderingAPI::DrawIndexed(const VertexArray& vao)
+	void RenderingAPI::DrawIndexed(const VertexArray& vao, const uint32_t indexCount)
 	{
 		vao.GetIndexBuffer()->Bind();
-		glDrawElements(GL_TRIANGLES, vao.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		uint32_t count = indexCount ? indexCount : vao.GetIndexBuffer()->GetCount();
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 	void RenderingAPI::PollEvents()
 	{

@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-
 namespace eng
 {
 	class Application
@@ -13,7 +11,7 @@ namespace eng
 		void Quit();
 	private:
 		bool _isRunning = true;
-		void SubsribeStaticClasses();
+		void SubscribeStaticClasses();
 	};
 	Application* CreateApplication();
 }

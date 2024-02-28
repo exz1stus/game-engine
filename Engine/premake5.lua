@@ -23,7 +23,7 @@ project "Engine"
 		"vendor/glad/include",
 		"vendor/glm",
 		"vendor/imgui",
-
+		"vendor/stb_image",
 		"src",
 	}
 	libdirs{

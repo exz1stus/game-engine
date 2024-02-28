@@ -10,6 +10,8 @@
 #include "renderer/Renderer2D.h"
 #include "renderer/Camera.h"
 
+#include "debug/imgui/ImguiManager.h"
+
 //----------events----------//
 #include "events/Event.h"
 
