@@ -2,11 +2,7 @@
 #include "Application.h"
 #include "renderer/Renderer2D.h"
 #include "renderer/platform/opengl/RenderingAPI.h"
-#include "renderer/RenderingEvents.h"
-#include "ApplicationEvents.h"
-#include "debug/imgui/ImguiManager.h"
-#include "GameTime.h"
-#include "AssetManager.h"
+#include "events/Event.h"
 
 namespace eng
 {
@@ -18,31 +14,30 @@ namespace eng
 	}
 	void Application::Init()
 	{
-		SubscribeStaticClasses();
-		ApplicationEvents::OnInit();
+		//module::app::OnInit();
+		Renderer2D::Init();
 	}
 
-	void Application::SubscribeStaticClasses()
-	{
-		ApplicationEvents::OnInit += GameTime::Init;
-		ApplicationEvents::OnInit += RenderingAPI::Init;
-		ApplicationEvents::OnInit += AssetManager::Init;
-		ApplicationEvents::OnInit += Renderer2D::Init;
-		ApplicationEvents::OnInit += ImguiManager::Init;
-	 
-		RenderingEvents::OnWindowClosed.Bind(&Application::Quit, this);
-	}
 	void Application::MainLoop()
 	{
-		while (_isRunning)
+		double deltaTime;
+		double time;
+		while (true)
 		{
-			ApplicationEvents::OnUpdate();
-			ApplicationEvents::OnRender();
+			//module::app::OnUpdate();
+			//module::app::OnRender();
+			
+			time = glfwGetTime();
+			for (size_t i = 0; i < 1; i++)
+			{
+				Renderer2D::DrawQuad({ 0,0 }, { 100.0f , 100.0f }, { 1, 0.5f, 1, 1 });
+				Renderer2D::DrawQuad({ 150,0 }, { 100.0f , 100.0f }, { 0.5f, 1, 0.5f, 1 });
+			}
+			deltaTime = time - glfwGetTime();
+
+			//std::cout << deltaTime << std::endl;
+
+			Renderer2D::EndScene();
 		}
-	}
-	void Application::Quit()
-	{
-		ApplicationEvents::OnQuit();
-		_isRunning = false;
 	}
 }

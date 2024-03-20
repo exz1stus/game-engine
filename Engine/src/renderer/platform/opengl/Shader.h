@@ -1,18 +1,13 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glad.h>
 
 namespace eng
 {
-	struct ShaderSource
-	{
-		std::string frag;
-		std::string vert;
-	};
-	
 	class Shader
 	{
 	public:
-		Shader(const std::string& name);
+		Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		~Shader() = default;
 
 		void Bind() const;
@@ -27,10 +22,14 @@ namespace eng
 		void SetMat4(const std::string& name, const glm::mat4& value);
 
 		int GetUniformLocation(const std::string& name);
-		uint32_t CreateShader(const ShaderSource& shaderSources);
-		
+
+		static std::shared_ptr<Shader> LoadShader(const std::string& name, const std::string& shaderLocation = shaderFolder);
+
+
+
 	private:
-		uint32_t CompileShader(uint32_t type, const std::string& source);
+		unsigned int CompileShader(unsigned int type, const std::string& source);
+		unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 
 		uint32_t _rendererID;
 		std::unordered_map<std::string, int> _uniformLocationCache;

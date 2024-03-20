@@ -1,6 +1,5 @@
 #include "engpch.h"
 #include "Shader.h"
-#include <glad.h>
 
 #include "glm/gtc/type_ptr.hpp"
 
@@ -9,9 +8,11 @@ namespace eng
 	const std::string Shader::shaderFolder = "../Engine/assets/shaders/opengl/";
 	//const std::string Shader::shaderFolder = "assets/shaders/opengl/";
 
-	Shader::Shader(const std::string& name)
+	Shader::Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		:_rendererID(0), _name(name)
-	{}
+	{
+		_rendererID = CreateShader(vertexSrc, fragmentSrc);
+	}
 	void Shader::Bind() const
 	{
 		glUseProgram(_rendererID);
@@ -49,9 +50,37 @@ namespace eng
 		return u_Location;
 	}
 
-	uint32_t Shader::CompileShader(uint32_t type, const std::string& source)
+	std::shared_ptr<Shader> Shader::LoadShader(const std::string& name, const std::string& shaderLocation)
 	{
-		uint32_t id = glCreateShader(type);
+		std::string vertexSrc;
+		std::string fragmentSrc;
+
+		std::ifstream streamVer(shaderLocation + name + ".vert");
+		streamVer.seekg(0, std::ios::end);
+		//vertexSrc.reserve(streamVer.tellg());
+		streamVer.seekg(0, std::ios::beg);
+		vertexSrc.assign((std::istreambuf_iterator<char>(streamVer)),
+			std::istreambuf_iterator<char>());
+		streamVer.close();
+
+
+		std::ifstream streamFr(shaderLocation + name + ".frag");
+		streamFr.seekg(0, std::ios::end);
+		//fragmentSrc.reserve(streamFr.tellg());
+		streamFr.seekg(0, std::ios::beg);
+		fragmentSrc.assign((std::istreambuf_iterator<char>(streamFr)),
+			std::istreambuf_iterator<char>());
+		streamFr.close();
+
+		//assert
+		if (vertexSrc.empty() || fragmentSrc.empty()) std::cout << "failed to parse shader at location : " + shaderLocation + name << std::endl;
+
+		return std::make_shared<Shader>(name, vertexSrc, fragmentSrc);
+	}
+
+	unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
+	{
+		unsigned int id = glCreateShader(type);
 		const char* src = source.c_str();
 
 		glShaderSource(id, 1, &src, nullptr);
@@ -80,11 +109,11 @@ namespace eng
 		return id;
 	}
 
-	uint32_t Shader::CreateShader(const ShaderSource& shaderSources)
+	unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 	{
-		uint32_t program = glCreateProgram();
-		uint32_t vs = CompileShader(GL_VERTEX_SHADER, shaderSources.vert);
-		uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, shaderSources.frag);
+		unsigned int program = glCreateProgram();
+		unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
 		glAttachShader(program, vs);
 		glAttachShader(program, fs);
@@ -94,7 +123,6 @@ namespace eng
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 
-		_rendererID = program;
 		return program;
 	}
 }

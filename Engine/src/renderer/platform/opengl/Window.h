@@ -1,4 +1,5 @@
 #pragma once
+#include "engpch.h"
 #include <glad.h>
 #include "GLFW/glfw3.h"
 namespace eng
@@ -11,7 +12,6 @@ namespace eng
 
 		void MakeCurrentContext();
 		void SwapBuffers();
-		bool IsClosed() { return glfwWindowShouldClose(_glWindow); }
 
 		uint32_t GetWidth() const { return _width; }
 		uint32_t GetHeight() const { return _height; }
