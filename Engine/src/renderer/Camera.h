@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "events/Event.h"
 
 namespace eng
 {
@@ -36,6 +37,7 @@ namespace eng
 		float _fov = 45.0f;
 
 		bool isOrthographic = true;   
+
 	};
 }
 

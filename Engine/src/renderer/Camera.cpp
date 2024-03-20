@@ -1,6 +1,6 @@
 #include "engpch.h"
 #include "Camera.h" 
-#include "renderer/platform/RenderingEvents.h"
+#include "renderer/RenderingEvents.h"
 #include "misc/Utilities.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,7 +24,6 @@ namespace eng
 		}
 		else
 		{
-			//_projection = glm::perspective(glm::radians(_fov), right / top, -1.0f, 100.0f);
 			float aspectRatio = right / top;
 			_projection = glm::perspective(glm::radians(_fov), aspectRatio, 0.1f, 10.0f);
 			return;
