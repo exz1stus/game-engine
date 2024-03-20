@@ -1,9 +1,6 @@
 #include "engpch.h"
 #include "RenderingAPI.h"
-#include "renderer/RenderingEvents.h"
-#include "renderer/RenderConfig.h"
-#include "GameTime.h"
-
+#include "renderer/platform/RenderingEvents.h"
 namespace eng
 {
 	std::unique_ptr<Window> RenderingAPI::_window;
@@ -23,9 +20,7 @@ namespace eng
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-		auto cfg = GetRenderConfig();
-
-		_window = std::make_unique<Window>(cfg.WindowWidth, cfg.WindowHeight);
+		_window = std::make_unique<Window>(700, 600);
 
 		_window->MakeCurrentContext();
 
@@ -35,11 +30,10 @@ namespace eng
 			std::cout << "glad init failed" << std::endl;
 		}
 		
-		SetViewport(cfg.WindowWidth, cfg.WindowHeight);
+		SetViewport(700, 600);
 
 		//debug messages
 		glEnable(GL_DEBUG_OUTPUT);
-
 		//glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(MessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
@@ -50,7 +44,7 @@ namespace eng
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		SetVSync(cfg.Vsync);
+		glfwSwapInterval(1);
 		
 		RenderingEvents::OnWindowResized += SetViewport;
 	}
@@ -59,35 +53,17 @@ namespace eng
 		glViewport(0, 0, width, height);
 	}
 
-	void RenderingAPI::DrawIndexed(const VertexArray& vao, const uint32_t indexCount)
+	void RenderingAPI::DrawIndexed(const VertexArray& vao)
 	{
 		vao.GetIndexBuffer()->Bind();
-		uint32_t count = indexCount ? indexCount : vao.GetIndexBuffer()->GetCount();
-		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, vao.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 	void RenderingAPI::PollEvents()
 	{
-		if (_window->IsClosed()) RenderingEvents::OnWindowClosed(); 
 		glfwPollEvents();
 	}
 	void RenderingAPI::SwapBuffers()
 	{
 		_window->SwapBuffers();
-		//WaitForNextFrame();
-	}
-	void RenderingAPI::WaitForNextFrame()
-	{
-		double deltaTime = GameTime::GetDeltaTime();
-
-		double targetFrameTime = 1.0 / 60.0; // 60 FPS
-		if (deltaTime < targetFrameTime)
-		{
-			double sleepTime = targetFrameTime - deltaTime;
-			GameTime::Sleep(sleepTime);
-		}
-	}
-	void RenderingAPI::SetVSync(bool vsync)
-	{
-		glfwSwapInterval(vsync);
 	}
 }

@@ -3,8 +3,5 @@
 
 class Game : public eng::Application
 {
-public:
-	Game();
-private:
-	void Update();
+
 };
