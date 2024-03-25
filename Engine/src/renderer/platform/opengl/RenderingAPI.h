@@ -16,8 +16,8 @@ namespace eng
 		static void SwapBuffers();
 
 		static void SetVSync(bool vsync);
+		static std::unique_ptr<Window> _window; //to make private
 	private:
 		static void WaitForNextFrame();
-		static std::unique_ptr<Window> _window;
 	};
 }

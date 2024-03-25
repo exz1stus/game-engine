@@ -70,4 +70,6 @@ namespace eng
 	private:
 		std::vector<EventListener> _listeners;
 	};
+	
+	//using Signal = Event<>; // TODO
 }

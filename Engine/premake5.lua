@@ -24,7 +24,8 @@ project "Engine"
 		"vendor/glm",
 		"vendor/imgui",
 		"vendor/stb_image",
-		"src",
+		"src/core",
+		"src"
 	}
 	libdirs{
 		"vendor"
@@ -35,7 +36,6 @@ project "Engine"
 		"GLFW",
 		"opengl32.lib",
 		"glad",
-		"GLFW",
 		"ImGui",
 	}
 

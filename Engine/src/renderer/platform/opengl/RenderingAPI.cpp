@@ -10,12 +10,27 @@ namespace eng
 
 	static void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
-		std::cout << message << std::endl;
+		switch (severity)
+		{
+		case GL_DEBUG_SEVERITY_NOTIFICATION:
+			Logger::Log(message);
+			break;
+		case GL_DEBUG_SEVERITY_LOW:
+			Logger::Warning(message);
+			break;
+		case GL_DEBUG_SEVERITY_MEDIUM:
+		case GL_DEBUG_SEVERITY_HIGH:
+			Logger::Error(message);
+			break;
+		default:
+			Logger::Error(message);
+			break;
+		}
+
 	}
 
 	void RenderingAPI::Init()
 	{
-
 		glfwInit();
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
@@ -32,9 +47,9 @@ namespace eng
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			//assert
-			std::cout << "glad init failed" << std::endl;
+			Logger::Error("glad init failed");
 		}
-		
+
 		SetViewport(cfg.WindowWidth, cfg.WindowHeight);
 
 		//debug messages
@@ -51,7 +66,7 @@ namespace eng
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		SetVSync(cfg.Vsync);
-		
+
 		RenderingEvents::OnWindowResized += SetViewport;
 	}
 	void RenderingAPI::SetViewport(uint16_t width, uint16_t height)
@@ -67,7 +82,7 @@ namespace eng
 	}
 	void RenderingAPI::PollEvents()
 	{
-		if (_window->IsClosed()) RenderingEvents::OnWindowClosed(); 
+		if (_window->IsClosed()) RenderingEvents::OnWindowClosed();
 		glfwPollEvents();
 	}
 	void RenderingAPI::SwapBuffers()

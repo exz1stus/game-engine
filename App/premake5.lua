@@ -18,6 +18,7 @@ project "App"
 		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/src/vendor/",
 		"%{wks.location}/Engine/src",
+		"%{wks.location}/Engine/src/core",
 		"%{wks.location}/Engine/vendor/glad"
 	}
 

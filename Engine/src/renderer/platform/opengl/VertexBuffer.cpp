@@ -15,7 +15,7 @@ namespace eng
 	{
 		glGenBuffers(1, &_rendererID);
 		Bind();
-		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW); //static draw
 	}
 
 	VertexBuffer::~VertexBuffer()

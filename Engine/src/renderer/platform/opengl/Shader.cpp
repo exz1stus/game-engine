@@ -6,9 +6,6 @@
 
 namespace eng
 {
-	const std::string Shader::shaderFolder = "../Engine/assets/shaders/opengl/";
-	//const std::string Shader::shaderFolder = "assets/shaders/opengl/";
-
 	Shader::Shader(const std::string& name)
 		:_rendererID(0), _name(name)
 	{}
@@ -19,6 +16,21 @@ namespace eng
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+	void Shader::SetInt(const std::string& name, int value)
+	{
+		GLint location = GetUniformLocation(name);
+		glUniform1i(location, value);
+	}
+	void Shader::SetArrInt(const std::string& name, const int* arr, const uint32_t length)
+	{
+		GLint location = GetUniformLocation(name);
+		glUniform1iv(location, GLsizei(length), arr);
+	}
+	void Shader::SetVecInt(const std::string& name, const std::vector<int>& vec)
+	{
+		GLint location = GetUniformLocation(name);
+		glUniform1iv(location, GLsizei(vec.size()), &vec[0]);
 	}
 	void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
@@ -40,8 +52,7 @@ namespace eng
 		int u_Location = glGetUniformLocation(_rendererID, name.c_str());
 		if (u_Location == -1)
 		{
-			//assert
-			std::cout << "Uniform " << name << "doesn't exist" << std::endl;
+			Logger::Error("Uniform " + name + "doesn't exist");
 		}
 
 		_uniformLocationCache[name] = u_Location;
@@ -69,9 +80,9 @@ namespace eng
 
 			glGetShaderInfoLog(id, length, &length, message);
 
-			//assert
-			std::cout << "Shader error : " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << std::endl;
-			std::cout << message << std::endl;
+			
+			Logger::Error("Shader error : " + (type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
+			Logger::Error(message);
 
 			glDeleteShader(id);
 			return 0;

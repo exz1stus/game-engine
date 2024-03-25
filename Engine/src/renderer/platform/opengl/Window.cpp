@@ -32,4 +32,8 @@ namespace eng
 	{
 		glfwSwapBuffers(_glWindow);
 	}
+	bool Window::GetKey(uint16_t key)
+	{
+		return glfwGetKey(_glWindow, key) == GLFW_PRESS;
+	}
 }

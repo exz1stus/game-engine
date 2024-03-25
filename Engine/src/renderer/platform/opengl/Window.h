@@ -11,6 +11,7 @@ namespace eng
 
 		void MakeCurrentContext();
 		void SwapBuffers();
+		bool GetKey(uint16_t key);
 		bool IsClosed() { return glfwWindowShouldClose(_glWindow); }
 
 		uint32_t GetWidth() const { return _width; }

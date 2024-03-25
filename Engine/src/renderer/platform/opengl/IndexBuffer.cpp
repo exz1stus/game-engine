@@ -8,7 +8,7 @@ namespace eng
 	{
 		glGenBuffers(1, &_rendererId);
 		Bind();
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW); //static draw
 	}
 
 	IndexBuffer::~IndexBuffer()

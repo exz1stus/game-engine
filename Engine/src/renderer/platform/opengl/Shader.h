@@ -18,7 +18,9 @@ namespace eng
 		void Bind() const;
 		void Unbind() const;
 
-		//void SetInt(const std::string& name, int value);
+		void SetInt(const std::string& name, int value);
+		void SetArrInt(const std::string& name, const int* arr, const uint32_t length);
+		void SetVecInt(const std::string& name, const std::vector<int>& vec);
 		//void SetIntArray(const std::string& name, int* values, uint32_t count);
 		//void SetFloat(const std::string& name, float value);
 		//void SetFloat2(const std::string& name, const glm::vec2& value);
