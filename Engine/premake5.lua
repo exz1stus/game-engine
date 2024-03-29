@@ -26,11 +26,12 @@ project "Engine"
 		"vendor/stb_image",
 		"src/core",
 		"src"
+		"vendor/entt/single_include",
 	}
 	libdirs{
 		"vendor"
 	}
-
+	
 	links
 	{
 		"GLFW",
@@ -39,9 +40,11 @@ project "Engine"
 		"ImGui",
 	}
 
+	filter "files:vendor/EnttLibrary/*.cpp"
+        pchsource ""
+
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines

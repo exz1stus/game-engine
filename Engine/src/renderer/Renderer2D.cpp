@@ -48,14 +48,17 @@ namespace eng
 		std::array<int, MaxTextureSlots> TextureSlotsIndices;
 		uint32_t TextureSlotsUsed = 0;
 	};
-	struct RenderingStatisticts
+	struct RenderingStats
 	{
 		uint32_t DrawCalls = 0;
 		uint32_t QuadCount = 0;
 	};
-
 	static RendererData renderData;
-	static RenderingStatisticts renderStats;
+	static RenderingStats renderStats;
+	const RenderingStats& GetStats()
+	{
+		return renderStats;
+	}
 
 	void Renderer2D::Init()
 	{
@@ -118,13 +121,13 @@ namespace eng
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
+
+		// TODO: rewrite
 		if (renderData.QuadIndexCount >= renderData.MaxIndices)
 			NextBatch();
 
 		if (renderData.TextureSlotsUsed > renderData.MaxTextureSlots)
 			NextBatch();
-
-		float textureIndex = 0;
 
 		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
 
@@ -140,7 +143,7 @@ namespace eng
 			renderData.QuadVerticesPtr->Position = transform * renderData.quadVerticesPositions[i];
 			renderData.QuadVerticesPtr->Color = color;
 			renderData.QuadVerticesPtr->TexCoord = renderData.texCoords[i];
-			renderData.QuadVerticesPtr->TexIndex = textureIndex;
+			renderData.QuadVerticesPtr->TexIndex = 0.0f;
 			renderData.QuadVerticesPtr->TilingFactor = 1.0f;
 			renderData.QuadVerticesPtr++;
 		}
@@ -148,6 +151,10 @@ namespace eng
 		renderStats.QuadCount++;
 	}
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)
+	{
+		DrawQuad(glm::vec3(position, 0.0f), glm::vec3(size, 1.0f), color, texture);
+	}
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)
 	{
 		if (renderData.QuadIndexCount >= renderData.MaxIndices)
 			NextBatch();
@@ -176,11 +183,11 @@ namespace eng
 		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
 
 		glm::mat4 transform = glm::translate(
-			glm::mat4(1.0f), glm::vec3(position, 0.0f))
+			glm::mat4(1.0f), glm::vec3(position))
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), { 1.0f, 0.0f, 0.0f })
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), { 0.0f, 1.0f, 0.0f })
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -239,7 +246,6 @@ namespace eng
 	void Renderer2D::EndScene()
 	{	
 		Flush();
-		Logger::Log(renderStats.DrawCalls);
 		RenderingEvents::OnDrawUI();
 		RenderingAPI::SwapBuffers();
 		RenderingAPI::PollEvents();

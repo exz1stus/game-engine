@@ -20,14 +20,14 @@ namespace eng
 		if (isOrthographic)
 		{
 			_projection = glm::ortho(left, right, bottom, top, 0.1f, 100.0f);
-			float zoomFactor = 2.0f;
+			float zoomFactor = 1.0f;
 			_projection = glm::scale(_projection, glm::vec3(zoomFactor, zoomFactor, zoomFactor));
 		}
 		else
 		{
 			if (top == 0) return;
 			float aspectRatio = right / top;
-			_projection = glm::perspective(glm::radians(_fov), aspectRatio, 0.1f, 100.0f);
+			_projection = glm::perspective(glm::radians(_fov), aspectRatio, 0.1f, 1000.0f);
 
 		}
 	}

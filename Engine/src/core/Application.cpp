@@ -4,9 +4,10 @@
 #include "renderer/platform/opengl/RenderingAPI.h"
 #include "renderer/RenderingEvents.h"
 #include "ApplicationEvents.h"
-#include "debug/imgui/ImguiManager.h"
 #include "GameTime.h"
+#include "debug/imgui/ImguiManager.h"
 #include "assets/AssetManager.h"
+#include "ecs/SceneManager.h"
 
 namespace eng
 {
@@ -29,6 +30,7 @@ namespace eng
 		ApplicationEvents::OnInit += AssetManager::Init;
 		ApplicationEvents::OnInit += Renderer2D::Init;
 		ApplicationEvents::OnInit += ImguiManager::Init;
+		ApplicationEvents::OnInit += SceneManager::Init;
 	 
 		RenderingEvents::OnWindowClosed.Bind(&Application::Quit, this);
 	}
@@ -37,8 +39,9 @@ namespace eng
 		while (_isRunning)
 		{
 			ApplicationEvents::OnUpdate();
+			Renderer2D::BeginScene();
 			ApplicationEvents::OnRender();
-
+			Renderer2D::EndScene();
 			test();
 		}
 	}

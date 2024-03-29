@@ -16,7 +16,7 @@ namespace eng
 			Logger::Log(message);
 			break;
 		case GL_DEBUG_SEVERITY_LOW:
-			Logger::Warning(message);
+			//Logger::Warning(message);
 			break;
 		case GL_DEBUG_SEVERITY_MEDIUM:
 		case GL_DEBUG_SEVERITY_HIGH:

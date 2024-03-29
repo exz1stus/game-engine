@@ -7,6 +7,7 @@
 
 #include "renderer/platform/opengl/Texture2D.h"
 #include "misc/ApplicationVariables.h"
+#include "ecs/example scripts/PlayerController.h"
 
 using namespace eng;
 
@@ -26,8 +27,6 @@ static float rz = 0;
 
 static std::array<std::shared_ptr<Texture2D>, 32> texs;
 
-int ind;
-
 Game::Game()
 {
 	eng::ApplicationEvents::OnRender.Bind(&Game::Update, this);
@@ -46,39 +45,45 @@ Game::Game()
 		std::string texPath = GetVars().texturesLocation + std::to_string(i + 1) + ".jpg";
 		texs[i] = std::make_shared<eng::Texture2D>(texPath);
 	}
-
-}
-void Game::Update()
-{
-	eng::Renderer2D::_cam->SetPosition(glm::vec3(x,y,z));
-	eng::Renderer2D::_cam->SetRotation(glm::vec3(rx, ry, rz));
-
-	eng::Renderer2D::BeginScene();
-
-	uint32_t size = 10;
-
-	/*for (size_t x = 0; x < a; x++)
-	{
-		for (size_t y = 0; y < a; y++)
-		{
-			eng::Renderer2D::DrawQuad({ size * x, size * y }, { size , size }, { 1.0f, 1.0f, 1.0f, 1.0f }, texs[(x*y)]);
-		}
-	}*/
+	Entity e;
+	auto& transform = e.AddComponent<TransformComponent>();
+	auto& sprite = e.AddComponent<SpriteRendererComponent>();
 	
 	
-	for (size_t i = 0; i < 33; i++)
+	transform.scale.x = 50;
+	transform.scale.y = 50;
+	sprite.texture = texs[6];
+
+	for (size_t i = 0; i < 10; i++)
 	{
-		for (size_t j = 0; j < 33; j++)
+		for (size_t j = 0; j < 10; j++)
 		{
-			ind++;
-			if (ind > 2) ind = 0;
-			eng::Renderer2D::DrawQuad({ size * i, size * j }, { size , size }, { 1.0f, 1.0f, 1.0f, 1.0f }, texs[ind]);
+			Entity e;
+			auto& transform = e.AddComponent<TransformComponent>();
+			auto& sprite = e.AddComponent<SpriteRendererComponent>();
+			e.AddComponent<ScriptComponent>().AddScript<PlayerController>();;
+			transform.scale = { 5.0f ,5.0f, 1.0f };
+			transform.position.x = i * transform.scale.x;
+			transform.position.y = j * transform.scale.y;
+			sprite.texture = texs[7];
 		}
 	}
 
-	//for (size_t j = 0; j < 32*32; j++)
-	//{
-	//	eng::Renderer2D::DrawQuad({ size * j, size }, { size , size }, { 1.0f, 1.0f, 1.0f, 1.0f }, texs[j % 4]);
-	//}
-	eng::Renderer2D::EndScene();
+	
+
+}
+
+void Game::Update()
+{
+	/*int size = 10;
+	for (size_t i = 0; i < 30; i++)
+	{
+		for (size_t j = 0; j < 30; j++)
+		{
+			eng::Renderer2D::DrawQuad({ size * i, size * j }, { size , size }, { 1.0f, 1.0f, 1.0f, 1.0f }, texs[7]);
+		}
+	}*/
+
+	eng::Renderer2D::_cam->SetPosition(glm::vec3(x, y, z));
+	eng::Renderer2D::_cam->SetRotation(glm::vec3(rx, ry, rz));
 }

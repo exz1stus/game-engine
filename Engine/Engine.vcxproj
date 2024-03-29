@@ -58,10 +58,9 @@
       <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\benchmark\include;vendor\glfw\include;vendor\glad\include;vendor\glm;vendor\imgui;vendor\stb_image;src\core;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\benchmark\include;vendor\glfw\include;vendor\glad\include;vendor\glm;vendor\imgui;vendor\stb_image;vendor\entt\single_include;src\core;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -79,13 +78,12 @@
       <PrecompiledHeaderFile>engpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;;ENG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\benchmark\include;vendor\glfw\include;vendor\glad\include;vendor\glm;vendor\imgui;vendor\stb_image;src\core;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\benchmark\include;vendor\glfw\include;vendor\glad\include;vendor\glm;vendor\imgui;vendor\stb_image;vendor\entt\single_include;src\core;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -99,6 +97,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\example scripts\PlayerController.h" />
     <ClInclude Include="src\assets\Asset.h" />
     <ClInclude Include="src\assets\AssetManager.h" />
     <ClInclude Include="src\assets\AssetPtr.h" />
@@ -109,7 +108,12 @@
     <ClInclude Include="src\core\eng.h" />
     <ClInclude Include="src\debug\imgui\ImguiManager.h" />
     <ClInclude Include="src\debug\logger\Logger.h" />
+    <ClInclude Include="src\ecs\CoreComponents.h" />
+    <ClInclude Include="src\ecs\Entity.h" />
+    <ClInclude Include="src\ecs\BehaviourScript.h" />
     <ClInclude Include="src\ecs\Scene.h" />
+    <ClInclude Include="src\ecs\SceneManager.h" />
+    <ClInclude Include="src\ecs\ScriptComponent.h" />
     <ClInclude Include="src\engpch.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\misc\ApplicationVariables.h" />
@@ -131,6 +135,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ecs\example scripts\PlayerController.cpp" />
     <ClCompile Include="src\assets\Asset.cpp" />
     <ClCompile Include="src\assets\AssetManager.cpp" />
     <ClCompile Include="src\core\Application.cpp" />
@@ -138,7 +143,9 @@
     <ClCompile Include="src\core\GameTime.cpp" />
     <ClCompile Include="src\debug\imgui\ImguiManager.cpp" />
     <ClCompile Include="src\debug\logger\Logger.cpp" />
+    <ClCompile Include="src\ecs\Entity.cpp" />
     <ClCompile Include="src\ecs\Scene.cpp" />
+    <ClCompile Include="src\ecs\SceneManager.cpp" />
     <ClCompile Include="src\engpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

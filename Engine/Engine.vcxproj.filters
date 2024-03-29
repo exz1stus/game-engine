@@ -66,7 +66,13 @@
     <ClInclude Include="src\debug\logger\Logger.h">
       <Filter>debug\logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\ecs\Entity.h">
+      <Filter>ecs</Filter>
+    </ClInclude>
     <ClInclude Include="src\ecs\Scene.h">
+      <Filter>ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\SceneManager.h">
       <Filter>ecs</Filter>
     </ClInclude>
     <ClInclude Include="src\engpch.h" />
@@ -122,6 +128,10 @@
       <Filter>renderer\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="vendor\stb_image\stb_image.h" />
+    <ClInclude Include="src\ecs\CoreComponents.h" />
+    <ClInclude Include="src\ecs\ScriptComponent.h" />
+    <ClInclude Include="src\ecs\BehaviourScript.h" />
+    <ClInclude Include="src\ecs\example scripts\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\assets\Asset.cpp">
@@ -145,7 +155,13 @@
     <ClCompile Include="src\debug\logger\Logger.cpp">
       <Filter>debug\logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\ecs\Entity.cpp">
+      <Filter>ecs</Filter>
+    </ClCompile>
     <ClCompile Include="src\ecs\Scene.cpp">
+      <Filter>ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\SceneManager.cpp">
       <Filter>ecs</Filter>
     </ClCompile>
     <ClCompile Include="src\engpch.cpp" />
@@ -198,5 +214,6 @@
       <Filter>renderer\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\ecs\example scripts\PlayerController.cpp" />
   </ItemGroup>
 </Project>

@@ -15,5 +15,9 @@
 //----------events----------//
 #include "events/Event.h"
 
+//----------ecs-------------//
+#include "ecs/Entity.h"
+#include "ecs/CoreComponents.h"
+
 //-----------misc-----------//
 #include "GameTime.h"

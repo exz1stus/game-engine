@@ -20,6 +20,7 @@ project "App"
 		"%{wks.location}/Engine/src",
 		"%{wks.location}/Engine/src/core",
 		"%{wks.location}/Engine/vendor/glad"
+		"%{wks.location}/Engine/vendor/entt/single_include",
 	}
 
 	libdirs
@@ -34,7 +35,6 @@ project "App"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
