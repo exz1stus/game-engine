@@ -7,8 +7,15 @@
 
 namespace eng
 {
+	static void RemoveScriptCallback(entt::registry& registry, Entity entity)
+	{
+		entity.GetComponent<ScriptComponent>().RemoveScript();
+	}
+
 	void Scene::Init()
-	{}
+	{
+		_registry.on_destroy<ScriptComponent>().connect<&RemoveScriptCallback>();
+	}
 
 	Entity Scene::AddEntity()
 	{
@@ -32,7 +39,6 @@ namespace eng
 				script._scriptInstance->OnInit();
 				script._scriptInstance->id = entity;
 			}
-
 			script._scriptInstance->OnUpdate();
 		}
 	}

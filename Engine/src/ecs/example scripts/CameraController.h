@@ -2,10 +2,10 @@
 #include "ecs/CoreComponents.h"
 namespace eng
 {
-	class PlayerController : public BehaviourScript
+	class CameraController : public BehaviourScript
 	{
-	private:
 		void OnInit() override;
 		void OnUpdate() override;
 	};
 }
+

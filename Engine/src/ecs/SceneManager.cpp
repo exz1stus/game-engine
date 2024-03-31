@@ -8,6 +8,7 @@ namespace eng
 	void SceneManager::Init()
 	{
 		_currentScene = std::make_shared<Scene>();
+		_currentScene->Init();
 		ApplicationEvents::OnUpdate.Bind(&Scene::Update, &*_currentScene);
 		ApplicationEvents::OnRender.Bind(&Scene::Render, &*_currentScene);
 	}

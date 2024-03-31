@@ -8,6 +8,7 @@
 #include "renderer/platform/opengl/Texture2D.h"
 #include "misc/ApplicationVariables.h"
 #include "ecs/example scripts/PlayerController.h"
+#include "ecs/example scripts/CameraController.h"
 
 using namespace eng;
 
@@ -45,32 +46,21 @@ Game::Game()
 		std::string texPath = GetVars().texturesLocation + std::to_string(i + 1) + ".jpg";
 		texs[i] = std::make_shared<eng::Texture2D>(texPath);
 	}
-	Entity e;
-	auto& transform = e.AddComponent<TransformComponent>();
-	auto& sprite = e.AddComponent<SpriteRendererComponent>();
-	
-	
-	transform.scale.x = 50;
-	transform.scale.y = 50;
-	sprite.texture = texs[6];
 
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
-		for (size_t j = 0; j < 10; j++)
+		for (size_t j = 0; j < 1; j++)
 		{
 			Entity e;
 			auto& transform = e.AddComponent<TransformComponent>();
 			auto& sprite = e.AddComponent<SpriteRendererComponent>();
-			e.AddComponent<ScriptComponent>().AddScript<PlayerController>();;
+			e.AddComponent<ScriptComponent>().AddScript<CameraController>();
 			transform.scale = { 5.0f ,5.0f, 1.0f };
 			transform.position.x = i * transform.scale.x;
 			transform.position.y = j * transform.scale.y;
 			sprite.texture = texs[7];
 		}
 	}
-
-	
-
 }
 
 void Game::Update()
@@ -83,7 +73,6 @@ void Game::Update()
 			eng::Renderer2D::DrawQuad({ size * i, size * j }, { size , size }, { 1.0f, 1.0f, 1.0f, 1.0f }, texs[7]);
 		}
 	}*/
-
 	eng::Renderer2D::_cam->SetPosition(glm::vec3(x, y, z));
 	eng::Renderer2D::_cam->SetRotation(glm::vec3(rx, ry, rz));
 }

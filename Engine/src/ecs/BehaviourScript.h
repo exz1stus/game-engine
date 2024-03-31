@@ -4,9 +4,9 @@ namespace eng
 	class BehaviourScript
 	{
 	public:
-		virtual void OnInit() {};
-		virtual void OnUpdate() {};
-		virtual void OnDestroy() {};
+		virtual void OnInit() {}
+		virtual void OnUpdate() {}
+		virtual void OnDestroy() {}
 
 		const Entity GetAttachedEntity() const { return id; }
 
@@ -30,6 +30,7 @@ namespace eng
 		template<typename T>
 		void RemoveComponent()
 		{
+			Logger::Log(id);
 			id.RemoveComponent<T>();
 		}
 	private:

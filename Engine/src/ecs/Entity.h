@@ -41,7 +41,7 @@ namespace eng
 			if (HasComponent<T>())
 			{
 				Logger::Error("Entity already has the component");
-				//return nullptr; // TODO : rewrite
+				return GetComponent<T>();
 			}
 			T& component = SceneManager::GetCurrentScene()->_registry.emplace<T>(id, std::forward<Args>(args)...);
 			return component;
@@ -49,7 +49,7 @@ namespace eng
 		template<typename T>
 		void RemoveComponent()
 		{
-			if (HasComponent<T>())
+			if (!HasComponent<T>())
 			{
 				Logger::Error("Entity doesn't have the component");
 				return;

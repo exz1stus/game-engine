@@ -132,6 +132,7 @@
     <ClInclude Include="src\ecs\ScriptComponent.h" />
     <ClInclude Include="src\ecs\BehaviourScript.h" />
     <ClInclude Include="src\ecs\example scripts\PlayerController.h" />
+    <ClInclude Include="src\ecs\example scripts\CameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\assets\Asset.cpp">
@@ -166,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="src\engpch.cpp" />
     <ClCompile Include="src\misc\ApplicationVariables.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="src\misc\CameraController.cpp">
       <Filter>misc</Filter>
     </ClCompile>
     <ClCompile Include="src\misc\Test.cpp">
@@ -215,5 +213,6 @@
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
     <ClCompile Include="src\ecs\example scripts\PlayerController.cpp" />
+    <ClCompile Include="src\ecs\example scripts\CameraController.cpp" />
   </ItemGroup>
 </Project>

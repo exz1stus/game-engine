@@ -97,6 +97,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\example scripts\CameraController.h" />
     <ClInclude Include="src\ecs\example scripts\PlayerController.h" />
     <ClInclude Include="src\assets\Asset.h" />
     <ClInclude Include="src\assets\AssetManager.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ecs\example scripts\CameraController.cpp" />
     <ClCompile Include="src\ecs\example scripts\PlayerController.cpp" />
     <ClCompile Include="src\assets\Asset.cpp" />
     <ClCompile Include="src\assets\AssetManager.cpp" />
@@ -150,7 +152,6 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\misc\ApplicationVariables.cpp" />
-    <ClCompile Include="src\misc\CameraController.cpp" />
     <ClCompile Include="src\misc\Test.cpp" />
     <ClCompile Include="src\renderer\Camera.cpp" />
     <ClCompile Include="src\renderer\RenderConfig.cpp" />
