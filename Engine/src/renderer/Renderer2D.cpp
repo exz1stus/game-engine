@@ -12,10 +12,10 @@
 #include "GameTime.h"
 #include "misc/ApplicationVariables.h"
 
+#include "ecs/SceneManager.h"
+
 namespace eng
 {
-	std::unique_ptr<Camera> Renderer2D::_cam;
-
 	struct QuadVertex
 	{
 		glm::vec3 Position;
@@ -62,9 +62,9 @@ namespace eng
 
 	void Renderer2D::Init()
 	{
-		_cam = std::make_unique<Camera>(-350, 350, -300, 300, false);
+		/*_cam = std::make_unique<Camera>(-350, 350, -300, 300, false);
 		_cam->SetPosition({ 0.0f,0.0f,1.0f });
-		_cam->SetRotation({ 0.0f,0.0f,0.0f });
+		_cam->SetRotation({ 0.0f,0.0f,0.0f });*/
 		renderData.quadVerticesPositions[0] = { -0.5f, -0.5f, 0.0f , 1.0f, };
 		renderData.quadVerticesPositions[1] = { 0.5f, -0.5f	, 0.0f , 1.0f, };
 		renderData.quadVerticesPositions[2] = { 0.5f,  0.5f	, 0.0f , 1.0f, };
@@ -122,39 +122,20 @@ namespace eng
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
 
-		// TODO: rewrite
-		if (renderData.QuadIndexCount >= renderData.MaxIndices)
-			NextBatch();
-
-		if (renderData.TextureSlotsUsed > renderData.MaxTextureSlots)
-			NextBatch();
-
-		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
-
-		glm::mat4 transform = glm::translate(
-			glm::mat4(1.0f), glm::vec3(position, 0.0f))
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), { 1.0f, 0.0f, 0.0f })
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), { 0.0f, 1.0f, 0.0f })
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
-		for (size_t i = 0; i < 4; i++)
-		{
-			renderData.QuadVerticesPtr->Position = transform * renderData.quadVerticesPositions[i];
-			renderData.QuadVerticesPtr->Color = color;
-			renderData.QuadVerticesPtr->TexCoord = renderData.texCoords[i];
-			renderData.QuadVerticesPtr->TexIndex = 0.0f;
-			renderData.QuadVerticesPtr->TilingFactor = 1.0f;
-			renderData.QuadVerticesPtr++;
-		}
-		renderData.QuadIndexCount += 6;
-		renderStats.QuadCount++;
+		DrawQuad(glm::vec3(position, 0.0f), glm::vec3(size, 0.0f), color, renderData.TextureSlots[0]);
 	}
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)
 	{
 		DrawQuad(glm::vec3(position, 0.0f), glm::vec3(size, 1.0f), color, texture);
 	}
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)
+	{
+		float rotZ = 0.0f;
+		glm::mat4 transform = glm::translate(
+			glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f)); //use quat
+		DrawQuad(transform, color, texture);
+	}
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)
 	{
 		if (renderData.QuadIndexCount >= renderData.MaxIndices)
 			NextBatch();
@@ -179,15 +160,6 @@ namespace eng
 			renderData.TextureSlots[renderData.TextureSlotsUsed] = texture;
 			renderData.TextureSlotsUsed++;
 		}
-
-		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
-
-		glm::mat4 transform = glm::translate(
-			glm::mat4(1.0f), glm::vec3(position))
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), { 1.0f, 0.0f, 0.0f })
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), { 0.0f, 1.0f, 0.0f })
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -230,7 +202,7 @@ namespace eng
 		renderData.vbo->SetData(renderData.QuadVerticesPtrBase, dataSize);
 
 		renderData.shader->Bind();
-		renderData.shader->SetMat4("u_MVP", _cam->GetViewProjectionMatrix());
+		renderData.shader->SetMat4("u_MVP", SceneManager::GetMainCamera()->GetViewProjectionMatrix());
 
 		for (size_t i = 0; i < renderData.TextureSlotsUsed; i++)
 		{

@@ -5,6 +5,7 @@
 namespace eng
 {
 	std::shared_ptr<Scene> SceneManager::_currentScene;
+	std::shared_ptr<Camera> SceneManager::_mainCamera;
 	void SceneManager::Init()
 	{
 		_currentScene = std::make_shared<Scene>();

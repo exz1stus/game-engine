@@ -67,6 +67,10 @@ namespace eng
 
 		void operator()(Args... args) { Invoke(args...); }
 
+		// TODO
+
+		operator EventListener() const { return Invoke; }
+
 	private:
 		std::vector<EventListener> _listeners;
 	};

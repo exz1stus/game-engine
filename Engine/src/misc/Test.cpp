@@ -1,29 +1,43 @@
 #include "engpch.h"
+#include "ecs/component_ptr.h"
+#include "ecs/CoreComponents.h"
 #include "renderer/platform/opengl/RenderingAPI.h"
 #include "renderer/Renderer2D.h"
 #include "Utilities.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "events/Event.h"
+
 
 namespace eng
 {
+	void fff(std::function<void(int,float)>)
+	{
+
+	}
+	/*void fff(void (*func)(int, float))
+	{
+
+	}*/
+	static entt::observer observer;
 	void test()
 	{
-		Window* window = RenderingAPI::_window.get();
-		Camera* cam = Renderer2D::_cam.get();
+		
+		/*observer.connect(SceneManager::GetCurrentScene()->_registry, entt::collector.update<TransformComponent>());
+		Entity e;
+		TransformComponent& cmp = e.AddComponent<TransformComponent>();
+		cmp_ref<TransformComponent> ptr(cmp,e);
+		cmp_ref<TransformComponent> ptr1(cmp,e);
 
-		const float cameraSpeed = 0.5f;
-		if (window->GetKey(GLFW_KEY_W) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + cameraSpeed * glm::vec3(0.0f,0.0f,-1.0f));
-		if (window->GetKey(GLFW_KEY_S) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + cameraSpeed * glm::vec3(0.0f, 0.0f, 1.0f));
-		if (window->GetKey(GLFW_KEY_A) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f) * cameraSpeed);
-		if (window->GetKey(GLFW_KEY_D) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f) * cameraSpeed);
-		if (window->GetKey(GLFW_KEY_SPACE) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + cameraSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
-		if (window->GetKey(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			cam->SetPosition(cam->GetPosition() + cameraSpeed * glm::vec3(0.0f, -1.0f, 0.0f));
+		ptr = ptr1;
+		ptr->position.x = 100.0f;
+		fff(ptr);
+		for (Entity e : observer)
+		{
+			print(e.GetComponent<TransformComponent>().position.x);
+		}*/
+
+		Event<int, float> e;
+		fff(e);
 	}
 }

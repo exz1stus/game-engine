@@ -20,6 +20,8 @@ namespace eng
 	{
 		SubscribeStaticClasses();
 		ApplicationEvents::OnInit();
+
+		test();
 	}
 
 	void Application::SubscribeStaticClasses()
@@ -39,10 +41,11 @@ namespace eng
 		while (_isRunning)
 		{
 			ApplicationEvents::OnUpdate();
+
+			//renderLoop
 			Renderer2D::BeginScene();
 			ApplicationEvents::OnRender();
-			Renderer2D::EndScene();
-			test();
+			Renderer2D::EndScene();	
 		}
 	}
 	void Application::Quit()

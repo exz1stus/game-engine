@@ -8,9 +8,7 @@ namespace eng
 		:
 		_width(width), _height(height),
 		_glWindow(glfwCreateWindow(_width, _height, "game engine", NULL, NULL))
-	{
-		glfwSetWindowSizeCallback(_glWindow, WindowResizedCallback);
-	}
+	{}
 
 	Window::~Window()
 	{
@@ -28,11 +26,20 @@ namespace eng
 
 		glfwMakeContextCurrent(_glWindow);
 	}
-	void Window::SwapBuffers()
+	void Window::SwapBuffers() const
 	{
 		glfwSwapBuffers(_glWindow);
 	}
-	bool Window::GetKey(uint16_t key)
+	void Window::BindWindowCallbacks() const
+	{
+		glfwSetWindowSizeCallback(_glWindow, WindowResizedCallback);
+		glfwSetCursorPosCallback(_glWindow, MouseMovedCallback);
+	}
+	void Window::CenterCursor() const
+	{
+		glfwSetInputMode(_glWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+	bool Window::GetKey(uint16_t key) const
 	{
 		return glfwGetKey(_glWindow, key) == GLFW_PRESS;
 	}

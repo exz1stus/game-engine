@@ -10,10 +10,12 @@ namespace eng
 		~Window();
 
 		void MakeCurrentContext();
-		void SwapBuffers();
-		bool GetKey(uint16_t key);
+		void SwapBuffers() const;
+		void BindWindowCallbacks() const;
+		void CenterCursor() const;
+		bool GetKey(uint16_t key) const;
 		bool IsClosed() { return glfwWindowShouldClose(_glWindow); }
-
+		
 		uint32_t GetWidth() const { return _width; }
 		uint32_t GetHeight() const { return _height; }
 

@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "CoreComponents.h"
 #include "ScriptComponent.h"
+#include "CameraComponent.h"
 #include "renderer/Renderer2D.h"
 
 namespace eng
@@ -12,9 +13,12 @@ namespace eng
 		entity.GetComponent<ScriptComponent>().RemoveScript();
 	}
 
+	static entt::observer camObserver;
+
 	void Scene::Init()
 	{
 		_registry.on_destroy<ScriptComponent>().connect<&RemoveScriptCallback>();
+		camObserver.connect(_registry, entt::collector.update<TransformComponent>().where<CameraComponent>());
 	}
 
 	Entity Scene::AddEntity()
@@ -27,6 +31,12 @@ namespace eng
 	}
 	void Scene::Update()
 	{
+		for (Entity entity : camObserver)
+		{
+			entity.GetComponent<CameraComponent>().UpdateCameraTransform(entity.GetComponent<TransformComponent>());
+		}
+		camObserver.clear();
+
 		auto view = _registry.view<ScriptComponent>();
 
 		for (Entity entity : view)
@@ -36,8 +46,8 @@ namespace eng
 			if (!script._scriptInstance)
 			{
 				script._scriptInstance = script.InstantiateFunction();
-				script._scriptInstance->OnInit();
 				script._scriptInstance->id = entity;
+				script._scriptInstance->OnInit();
 			}
 			script._scriptInstance->OnUpdate();
 		}
@@ -52,8 +62,7 @@ namespace eng
 			auto& sprite = entity.GetComponent<SpriteRendererComponent>();
 
 			Renderer2D::DrawQuad(
-				transform.position,
-				transform.scale,
+				transform.GetTransform(),
 				sprite.GetRGBA(), sprite.texture);
 		}
 	}

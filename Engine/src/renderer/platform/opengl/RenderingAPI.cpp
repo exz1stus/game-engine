@@ -26,7 +26,6 @@ namespace eng
 			Logger::Error(message);
 			break;
 		}
-
 	}
 
 	void RenderingAPI::Init()
@@ -38,11 +37,13 @@ namespace eng
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-		auto cfg = GetRenderConfig();
+		auto& cfg = GetRenderConfig();
 
 		_window = std::make_unique<Window>(cfg.WindowWidth, cfg.WindowHeight);
 
 		_window->MakeCurrentContext();
+		_window->BindWindowCallbacks();
+		_window->CenterCursor();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{

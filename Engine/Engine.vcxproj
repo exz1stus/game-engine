@@ -97,6 +97,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\input\InputEvents.h" />
+    <ClInclude Include="src\ecs\CameraComponent.h" />
+    <ClInclude Include="src\ecs\component_ptr.h" />
     <ClInclude Include="src\ecs\example scripts\CameraController.h" />
     <ClInclude Include="src\ecs\example scripts\PlayerController.h" />
     <ClInclude Include="src\assets\Asset.h" />
@@ -136,6 +139,8 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\input\InputEvents.cpp" />
+    <ClCompile Include="src\ecs\CameraComponent.cpp" />
     <ClCompile Include="src\ecs\example scripts\CameraController.cpp" />
     <ClCompile Include="src\ecs\example scripts\PlayerController.cpp" />
     <ClCompile Include="src\assets\Asset.cpp" />
@@ -145,7 +150,6 @@
     <ClCompile Include="src\core\GameTime.cpp" />
     <ClCompile Include="src\debug\imgui\ImguiManager.cpp" />
     <ClCompile Include="src\debug\logger\Logger.cpp" />
-    <ClCompile Include="src\ecs\Entity.cpp" />
     <ClCompile Include="src\ecs\Scene.cpp" />
     <ClCompile Include="src\ecs\SceneManager.cpp" />
     <ClCompile Include="src\engpch.cpp">

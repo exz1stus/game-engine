@@ -1,4 +1,5 @@
 #pragma once
+#include "component_ptr.h"
 namespace eng
 {
 	class BehaviourScript
@@ -16,6 +17,12 @@ namespace eng
 		T& GetComponent() const
 		{
 			return id.GetComponent<T>();
+		}
+
+		template<typename T>
+		cmp_ref<T> GetComponentReactive() const
+		{
+			return id.GetComponentReactive<T>();
 		}
 		template<typename T>
 		bool HasComponent() const

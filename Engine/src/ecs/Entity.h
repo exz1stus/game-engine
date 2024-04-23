@@ -1,8 +1,12 @@
 #pragma once
 #include "entt/entt.hpp"
 #include "SceneManager.h"
+
 namespace eng
-{
+{	
+	template <typename Component>
+	class cmp_ref;
+
 	class Entity
 	{
 	public:
@@ -24,6 +28,11 @@ namespace eng
 		bool HasComponent() const
 		{
 			return SceneManager::GetCurrentScene()->_registry.any_of<T>(id);
+		}
+		template<typename T>
+		cmp_ref<T> GetComponentReactive() const
+		{
+			return cmp_ref(GetComponent<T>(),id);
 		}
 		template<typename T>
 		T& GetComponent() const
@@ -59,6 +68,11 @@ namespace eng
 		bool operator==(const Entity& other) const
 		{
 			return id == other.id;
+		}
+		template<typename T>
+		void Patch()
+		{
+			SceneManager::GetCurrentScene()->_registry.patch<T>(id);
 		}
 
 		operator const entt::entity() const { return id; }

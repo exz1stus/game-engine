@@ -1,8 +1,8 @@
 #include "engpch.h"
 #include "Camera.h" 
 #include "renderer/RenderingEvents.h"
+#include "ecs/CoreComponents.h"
 #include "misc/Utilities.h"
-
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace eng
@@ -31,34 +31,27 @@ namespace eng
 
 		}
 	}
-	void Camera::ResizeProjection(uint16_t width,uint16_t height)
+	void Camera::ResizeProjection(const uint16_t width,const uint16_t height) 
 	{
 		SetProjection(-width /2, width /2, -height /2, height /2);
 	}
-	void Camera::SetRotation(const glm::vec3& rotation)
-	{
-		_rotation = rotation;
-		_direction.x = cos(glm::radians(_rotation.x - 90)) * cos(glm::radians(_rotation.y));
-		_direction.y = sin(glm::radians(_rotation.y));
-		_direction.z = sin(glm::radians(_rotation.x - 90)) * cos(glm::radians(_rotation.y));
-		_direction = glm::normalize(_direction);
 
-		RecalculateViewMatrix();
-	}
 	void Camera::SetPosition(const glm::vec3& position)
 	{
 		_position = position;
 		RecalculateViewMatrix();
 	}
+	void Camera::SetTransform(const TransformComponent& transform)
+	{
+		_position = transform.position;
+		_rotation = transform.rotation;
+		_front = transform.GetForward();
+		_up = transform.GetUp();
+
+		RecalculateViewMatrix();
+	}
 	void Camera::RecalculateViewMatrix()
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), _position);
-
-		glm::mat4 rot = glm::lookAt(_position, _position + _direction, _up)*
-						glm::rotate(glm::mat4(transform), glm::radians(_rotation.z), _direction);
-			
-
-		_view = rot * glm::inverse(transform);
-
+		_view = glm::lookAt(_position, _position + _front, _up);
 	}
 }

@@ -12,8 +12,8 @@ namespace eng
 		void RemoveEntity(const Entity id);
 		void Update();
 		void Render();
+		entt::registry _registry;//TODO : private
 	private:
-		entt::registry _registry;
 		friend class Entity;
 	};
 }
