@@ -1,10 +1,12 @@
 #pragma once
 #include "entt/entt.hpp"
+#include "debug/imgui/IDebugMenu.h"
+
 
 namespace eng
 {
 	class Entity;
-	class Scene
+	class Scene : public IDebugMenu
 	{
 	public:
 		void Init();
@@ -12,8 +14,9 @@ namespace eng
 		void RemoveEntity(const Entity id);
 		void Update();
 		void Render();
-		entt::registry _registry;//TODO : private
 	private:
+		virtual void DrawMenu() override;
+		entt::registry _registry;//TODO : private
 		friend class Entity;
 	};
 }

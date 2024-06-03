@@ -72,7 +72,7 @@ namespace eng
 		operator EventListener() const { return Invoke; }
 
 	private:
-		std::vector<EventListener> _listeners;
+		std::vector<EventListener> _listeners; //TODO : list?
 	};
 	
 	//using Signal = Event<>; // TODO

@@ -34,7 +34,7 @@ namespace eng
 					break;
 				}
 				_assets[fileName] = factory.Load(fileName);
-				Logger::Log("Loading: " + fileName);
+				Logger::Log("Loading: {}", fileName);
 
 				//supports only assets with different names
 				//assets group(shaders) will be searched in load() by name

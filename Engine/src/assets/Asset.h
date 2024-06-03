@@ -18,7 +18,7 @@ namespace eng
 		const std::vector<std::string>& GetFormats() const { return _assetFormats; }
 		const std::string& GetLocation() const { return _assetLocation; }
 	protected:
-		virtual void OnCreation() {};
+		virtual void OnCreation() {}; //
 		virtual std::shared_ptr<void> LoadAsset(const std::string& fileName, bool& loadStatus) const = 0;
 		virtual std::shared_ptr<void> FailedToLoad(const std::string& fileName) const;
 		std::vector<std::string> _assetFormats;

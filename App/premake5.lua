@@ -15,22 +15,25 @@ project "App"
 	{
 		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/vendor/glm",
-		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/src/vendor/",
 		"%{wks.location}/Engine/src",
 		"%{wks.location}/Engine/src/core",
-		"%{wks.location}/Engine/vendor/glad"
+		"%{wks.location}/Engine/vendor/glad",
 		"%{wks.location}/Engine/vendor/entt/single_include",
+		"%{IncludeDir.imgui}",
 	}
 
 	libdirs
 	{
-		"%{wks.location}/Engine/bin/outputdir/"
+		"%{wks.location}/Engine/bin/outputdir/",
+		"%{IncludeDir.imgui}/bin/".. outputdir .."ImGui",
 	}
 
 	links
 	{
-		"Engine"
+		"Engine",
+		"GLFW",
+		"ImGui"
 	}
 
 	filter "system:windows"

@@ -35,9 +35,13 @@ namespace eng
 		glfwSetWindowSizeCallback(_glWindow, WindowResizedCallback);
 		glfwSetCursorPosCallback(_glWindow, MouseMovedCallback);
 	}
-	void Window::CenterCursor() const
+	void Window::DisableCursor() const
 	{
 		glfwSetInputMode(_glWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+	void Window::EnableCursor() const
+	{
+		glfwSetInputMode(_glWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 	bool Window::GetKey(uint16_t key) const
 	{

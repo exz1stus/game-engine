@@ -62,9 +62,6 @@ namespace eng
 
 	void Renderer2D::Init()
 	{
-		/*_cam = std::make_unique<Camera>(-350, 350, -300, 300, false);
-		_cam->SetPosition({ 0.0f,0.0f,1.0f });
-		_cam->SetRotation({ 0.0f,0.0f,0.0f });*/
 		renderData.quadVerticesPositions[0] = { -0.5f, -0.5f, 0.0f , 1.0f, };
 		renderData.quadVerticesPositions[1] = { 0.5f, -0.5f	, 0.0f , 1.0f, };
 		renderData.quadVerticesPositions[2] = { 0.5f,  0.5f	, 0.0f , 1.0f, };

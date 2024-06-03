@@ -8,22 +8,24 @@ namespace eng
 {
 	std::unique_ptr<Window> RenderingAPI::_window;
 
+	static bool isCentered = false;
+
 	static void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
 		switch (severity)
 		{
 		case GL_DEBUG_SEVERITY_NOTIFICATION:
-			Logger::Log(message);
+			Logger::Log("{}",message);
 			break;
 		case GL_DEBUG_SEVERITY_LOW:
-			//Logger::Warning(message);
+			//Logger::Warning("{}",message);
 			break;
 		case GL_DEBUG_SEVERITY_MEDIUM:
 		case GL_DEBUG_SEVERITY_HIGH:
-			Logger::Error(message);
+			Logger::Error("{}", message);
 			break;
 		default:
-			Logger::Error(message);
+			Logger::Error("{}", message);
 			break;
 		}
 	}
@@ -43,11 +45,10 @@ namespace eng
 
 		_window->MakeCurrentContext();
 		_window->BindWindowCallbacks();
-		_window->CenterCursor();
+		_window->DisableCursor();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			//assert
 			Logger::Error("glad init failed");
 		}
 
@@ -84,6 +85,13 @@ namespace eng
 	void RenderingAPI::PollEvents()
 	{
 		if (_window->IsClosed()) RenderingEvents::OnWindowClosed();
+		//TODO : remove
+		if (_window->GetKey(GLFW_KEY_ESCAPE))
+		{
+			isCentered = !isCentered;
+			if (isCentered) _window->DisableCursor();
+			else _window->EnableCursor();
+		}
 		glfwPollEvents();
 	}
 	void RenderingAPI::SwapBuffers()

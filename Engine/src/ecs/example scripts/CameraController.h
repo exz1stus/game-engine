@@ -14,4 +14,3 @@ namespace eng
 		cmp_ref<TransformComponent> transform;
 	};
 }
-

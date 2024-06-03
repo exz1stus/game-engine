@@ -13,7 +13,7 @@ namespace eng
 		{
 			if (!std::is_base_of<BehaviourScript, T>::value)
 			{
-				Logger::Error("Script must be derived from BehaviourScript, EntityId:" +
+				Logger::Error("Script must be derived from BehaviourScript, EntityId:{}",
 					(uint32_t)_scriptInstance->GetAttachedEntity());
 				return;
 			}

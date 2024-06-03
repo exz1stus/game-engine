@@ -28,7 +28,7 @@ namespace eng
 
 	std::shared_ptr<void> AssetFactory::FailedToLoad(const std::string& fileName) const
 	{
-		Logger::Error("failed to load asset at location: " + _assetLocation + fileName);
+		Logger::Error("failed to load asset at location: {}", _assetLocation + fileName);
 		return nullptr;
 	}
 
@@ -57,7 +57,7 @@ namespace eng
 
 	std::shared_ptr<void> ShaderFactory::FailedToLoad(const std::string& fileName) const
 	{
-		Logger::Error("Failed to load shader " + fileName + " at location " + _assetLocation + "/" + fileName);
+		Logger::Error("Failed to load shader {} at location {}", fileName, _assetLocation + "/" + fileName);
 		return std::make_shared<Shader>(fileName);
 	}
 

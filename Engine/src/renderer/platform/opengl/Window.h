@@ -12,7 +12,8 @@ namespace eng
 		void MakeCurrentContext();
 		void SwapBuffers() const;
 		void BindWindowCallbacks() const;
-		void CenterCursor() const;
+		void DisableCursor() const;
+		void EnableCursor() const;
 		bool GetKey(uint16_t key) const;
 		bool IsClosed() { return glfwWindowShouldClose(_glWindow); }
 		

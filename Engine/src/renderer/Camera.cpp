@@ -28,12 +28,11 @@ namespace eng
 			if (top == 0) return;
 			float aspectRatio = right / top;
 			_projection = glm::perspective(glm::radians(_fov), aspectRatio, 0.1f, 1000.0f);
-
 		}
 	}
-	void Camera::ResizeProjection(const uint16_t width,const uint16_t height) 
+	void Camera::ResizeProjection(const uint16_t width, const uint16_t height)
 	{
-		SetProjection(-width /2, width /2, -height /2, height /2);
+		SetProjection(-width / 2, width / 2, -height / 2, height / 2);
 	}
 
 	void Camera::SetPosition(const glm::vec3& position)
@@ -45,6 +44,7 @@ namespace eng
 	{
 		_position = transform.position;
 		_rotation = transform.rotation;
+
 		_front = transform.GetForward();
 		_up = transform.GetUp();
 

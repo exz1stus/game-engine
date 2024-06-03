@@ -19,10 +19,12 @@ namespace eng
 	{
 
 	}*/
+	int a = 2;
+	int&& getInt() { return 2; }
+
 	static entt::observer observer;
 	void test()
 	{
-		
 		/*observer.connect(SceneManager::GetCurrentScene()->_registry, entt::collector.update<TransformComponent>());
 		Entity e;
 		TransformComponent& cmp = e.AddComponent<TransformComponent>();

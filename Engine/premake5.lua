@@ -13,6 +13,8 @@ project "Engine"
 	{
 		"src/**.h",
 		"src/**.cpp",
+		"vendor/stb_image/**.cpp",
+		"vendor/stb_image/**.h",
 	}
 
 	includedirs
@@ -25,7 +27,7 @@ project "Engine"
 		"vendor/imgui",
 		"vendor/stb_image",
 		"src/core",
-		"src"
+		"src",
 		"vendor/entt/single_include",
 	}
 	libdirs{

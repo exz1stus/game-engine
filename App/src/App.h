@@ -8,7 +8,10 @@ public:
 	Game();
 private:
 	eng::Entity e;
-	eng::Entity marker;
 	eng::Entity cam;
+
+	eng::Entity rotX;
+	eng::Entity rotY;
+	eng::Entity rotZ;
 	void Update();
 };

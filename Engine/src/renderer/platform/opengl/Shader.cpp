@@ -52,7 +52,7 @@ namespace eng
 		int u_Location = glGetUniformLocation(_rendererID, name.c_str());
 		if (u_Location == -1)
 		{
-			Logger::Error("Uniform " + name + "doesn't exist");
+			Logger::Error("Uniform {} doesn't exist", name);
 		}
 
 		_uniformLocationCache[name] = u_Location;
@@ -81,8 +81,8 @@ namespace eng
 			glGetShaderInfoLog(id, length, &length, message);
 
 			
-			Logger::Error("Shader error : " + (type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
-			Logger::Error(message);
+			Logger::Error("Shader error : {}", (type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
+			Logger::Error("{}",message);
 
 			glDeleteShader(id);
 			return 0;
