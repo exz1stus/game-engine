@@ -18,7 +18,10 @@ IncludeDir["ImGui"] = "Engine/vendor/imgui"
 group "Core"
 	include "App"
 	include "Engine"
+	
+group "Sandbox"
 	include "Sandbox"
+	include "SandboxServer"
 
 group "Dependencies"
 	include "Engine/vendor/glfw"

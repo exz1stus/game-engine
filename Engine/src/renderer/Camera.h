@@ -4,10 +4,16 @@
 
 namespace eng
 {
+	enum class CameraProjection
+	{
+		PERSPECTIVE,
+		ORTHOGRAPHIC
+	};
+
 	class Camera
 	{
 	public:
-		Camera(float left, float right, float bottom, float top, bool isOrthographic);
+		Camera(float left, float right, float bottom, float top, CameraProjection projection);
 
 		void SetProjection(float left, float right, float bottom, float top);
 
@@ -22,6 +28,8 @@ namespace eng
 	private:
 		void RecalculateViewMatrix();
 
+		CameraProjection _projMode;
+
 		glm::mat4 _view;
 		glm::mat4 _projection;
 
@@ -34,9 +42,6 @@ namespace eng
 		glm::vec3 _worldUp = { 0.0f, 1.0f, 0.0f };
 
 		float _fov = 60.0f;
-
-		bool isOrthographic = true;   
-
 	};
 }
 

@@ -3,7 +3,7 @@
 #include "ecs/BehaviourScript.h"
 namespace eng
 {
-	class CameraController : public BehaviourScript
+	class FreeFlyCameraController : public BehaviourScript
 	{
 	private:
 		void OnInit() override;

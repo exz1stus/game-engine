@@ -39,8 +39,7 @@ namespace eng
 		{
 			if (!HasComponent<T>())
 			{
-				Logger::Error("Entity doesn't have the component");
-				//return nullptr; // TODO : rewrite
+				Logger::Error("Entity id:{} doesn't have the component", (uint32_t)id);
 			}
 			return SceneManager::GetCurrentScene()->_registry.get<T>(id);
 		}
@@ -49,7 +48,7 @@ namespace eng
 		{
 			if (HasComponent<T>())
 			{
-				Logger::Error("Entity already has the component");
+				Logger::Error("Entity id:{} already has the component", (uint32_t)id);
 				return GetComponent<T>();
 			}
 			T& component = SceneManager::GetCurrentScene()->_registry.emplace<T>(id, std::forward<Args>(args)...);
@@ -60,7 +59,7 @@ namespace eng
 		{
 			if (!HasComponent<T>())
 			{
-				Logger::Error("Entity doesn't have the component");
+				Logger::Error("Entity id:{} doesn't have the component", (uint32_t)id);
 				return;
 			}
 			SceneManager::GetCurrentScene()->_registry.remove<T>(id);

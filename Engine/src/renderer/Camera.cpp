@@ -7,8 +7,8 @@
 
 namespace eng
 {
-	Camera::Camera(float left, float right, float bottom, float top, bool isOrthographic)
-		:isOrthographic(isOrthographic), _view(1.0f), _projection(1.0f)
+	Camera::Camera(float left, float right, float bottom, float top, CameraProjection projection)
+		:_projMode(projection), _view(1.0f), _projection(1.0f)
 	{
 		SetPosition(_position);
 		SetProjection(left, right, bottom, top);
@@ -17,11 +17,11 @@ namespace eng
 
 	void Camera::SetProjection(float left, float right, float bottom, float top)
 	{
-		if (isOrthographic)
+		if (_projMode == CameraProjection::ORTHOGRAPHIC)
 		{
-			_projection = glm::ortho(left, right, bottom, top, 0.1f, 100.0f);
-			float zoomFactor = 1.0f;
-			_projection = glm::scale(_projection, glm::vec3(zoomFactor, zoomFactor, zoomFactor));
+			_projection = glm::ortho(left, right, bottom, top, -1.0f, 100.0f);
+			//float zoomFactor = 1.0f;
+			//_projection = glm::scale(_projection, glm::vec3(zoomFactor, zoomFactor, zoomFactor));
 		}
 		else
 		{

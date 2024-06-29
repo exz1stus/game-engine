@@ -29,6 +29,7 @@ project "Engine"
 		"src/core",
 		"src",
 		"vendor/entt/single_include",
+		"vendor/enet/include",
 	}
 	libdirs{
 		"vendor"

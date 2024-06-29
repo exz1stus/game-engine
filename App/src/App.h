@@ -2,16 +2,18 @@
 #include "EntryPoint.h"
 #include "ecs/Entity.h"
 
+#include "network/Client.h"
+#include <memory>
+
+using namespace eng;
+
 class Game : public eng::Application
 {
 public:
 	Game();
 private:
-	eng::Entity e;
+	std::unique_ptr<Client> client;
 	eng::Entity cam;
 
-	eng::Entity rotX;
-	eng::Entity rotY;
-	eng::Entity rotZ;
 	void Update();
 };

@@ -16,7 +16,7 @@ namespace eng
 		void Render();
 	private:
 		virtual void DrawMenu() override;
-		entt::registry _registry;//TODO : private
+		entt::registry _registry;
 		friend class Entity;
 	};
 }

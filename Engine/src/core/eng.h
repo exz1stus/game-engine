@@ -3,7 +3,9 @@
 //-----------core-----------//
 #include "Application.h"
 #include "ApplicationEvents.h"
-#include "EntryPoint.h"
+
+//----------debug-----------//
+#include "debug/logger/Logger.h"
 
 //--------rendering---------//
 #include "renderer/RenderingEvents.h"

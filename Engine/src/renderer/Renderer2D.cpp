@@ -118,7 +118,6 @@ namespace eng
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
-
 		DrawQuad(glm::vec3(position, 0.0f), glm::vec3(size, 0.0f), color, renderData.TextureSlots[0]);
 	}
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, const std::shared_ptr<Texture2D> texture)

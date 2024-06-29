@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <functional>
-
 namespace eng
 {
 	template<typename... Args>
@@ -12,7 +11,7 @@ namespace eng
 		Event() = default;
 		Event(const EventListener& listener)
 		{
-			Subscribe(listener);
+			Subscribe(listener);	
 		}
 		~Event() = default;
 
@@ -30,7 +29,7 @@ namespace eng
 		void Unsubscribe(const EventListener& listener)
 		{
 			auto it = std::find_if(_listeners.begin(), _listeners.end(), [&](const EventListener& el) {
-				return el.target<void(Args...)>() == listener.target<void(Args...)>();
+				return el.target<void(Args...)>() == listener.target<void(Args...)>();			//TODO : bug? remove func by its declaration
 				});
 
 			if (it != _listeners.end())
@@ -47,7 +46,7 @@ namespace eng
 			Unsubscribe(target);
 		}
 
-		void Invoke(Args... args) const
+		virtual void Invoke(Args... args)
 		{
 			for (const auto& listener : _listeners)
 			{
@@ -65,7 +64,10 @@ namespace eng
 			Unsubscribe(listener);
 		}	
 
-		void operator()(Args... args) { Invoke(args...); }
+		virtual void operator()(Args... args)
+		{
+			Invoke(args...);
+		}
 
 		// TODO
 
@@ -76,4 +78,5 @@ namespace eng
 	};
 	
 	//using Signal = Event<>; // TODO
+	//TODO : add on debug event names to inspect event calls sequence
 }

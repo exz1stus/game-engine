@@ -11,23 +11,23 @@
 
 namespace eng
 {
-	void CameraController::OnInit()
+	void FreeFlyCameraController::OnInit()
 	{
 		transform = GetComponentReactive<TransformComponent>();
-		InputEvents::OnMouseMoved.Bind(&CameraController::CalculateRotation, this);
+		InputEvents::OnMouseMoved.Bind(&FreeFlyCameraController::CalculateRotation, this);
 	}
-	void CameraController::OnUpdate()
+	void FreeFlyCameraController::OnUpdate()
 	{
 		glm::vec3 movement = glm::vec3(0);
 
 		auto wind = glfwGetCurrentContext();
 
-		if (glfwGetKey(wind, GLFW_KEY_W)) movement += transform.get_readonly()->GetForward();
-		if (glfwGetKey(wind, GLFW_KEY_S)) movement -= transform.get_readonly()->GetForward();
-		if (glfwGetKey(wind, GLFW_KEY_D)) movement += transform.get_readonly()->GetRight();
-		if (glfwGetKey(wind, GLFW_KEY_A)) movement -= transform.get_readonly()->GetRight();
-		if (glfwGetKey(wind, GLFW_KEY_SPACE)) movement += transform.get_readonly()->GetUp();
-		if (glfwGetKey(wind, GLFW_KEY_LEFT_SHIFT)) movement -= transform.get_readonly()->GetUp();
+		if (glfwGetKey(wind, GLFW_KEY_W)) movement += transform.get().GetForward();
+		if (glfwGetKey(wind, GLFW_KEY_S)) movement -= transform.get().GetForward();
+		if (glfwGetKey(wind, GLFW_KEY_D)) movement += transform.get().GetRight();
+		if (glfwGetKey(wind, GLFW_KEY_A)) movement -= transform.get().GetRight();
+		if (glfwGetKey(wind, GLFW_KEY_SPACE)) movement += transform.get().GetUp();
+		if (glfwGetKey(wind, GLFW_KEY_LEFT_SHIFT)) movement -= transform.get().GetUp();
 
 		if (glfwGetKey(wind, GLFW_KEY_Q)) transform->rotation.z -= 100.0f*GameTime::GetDeltaTime();
 		if (glfwGetKey(wind, GLFW_KEY_E)) transform->rotation.z += 100.0f*GameTime::GetDeltaTime();
@@ -41,7 +41,7 @@ namespace eng
 		}
 	}
 
-	void CameraController::CalculateRotation(float mouseX, float mouseY)
+	void FreeFlyCameraController::CalculateRotation(float mouseX, float mouseY)
 	{
 		glm::vec3& cameraRot = transform->rotation;
 
@@ -58,16 +58,10 @@ namespace eng
 		cameraRot.y -= yaw; //matrix rotate
 		cameraRot.x += pitch;
 
-		//glm::vec3 up = transform.get_readonly()->GetUp();
-		//glm::vec3 right = transform.get_readonly()->GetRight();
-
-		//cameraRot = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), up) * glm::vec4(cameraRot,0.0f);
-		//cameraRot = glm::rotate(glm::mat4(1.0f), glm::radians(pitch), right) * glm::vec4(cameraRot, 0.0f);
-
-		/*const float maxPitch = 89.0f;
+		const float maxPitch = 89.0f;
 		if (cameraRot.x > maxPitch)
 			cameraRot.x = maxPitch;
 		else if (cameraRot.x < -maxPitch)
-			cameraRot.x = -maxPitch;*/
+			cameraRot.x = -maxPitch;
 	}
 }

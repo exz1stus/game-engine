@@ -1,5 +1,5 @@
 #pragma once
-#include "component_ptr.h"
+#include "component_ref.h"
 namespace eng
 {
 	class BehaviourScript

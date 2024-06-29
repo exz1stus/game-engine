@@ -1,4 +1,5 @@
 #include "engpch.h"
+#include "core/EntryPoint.h"
 #include "eng.h"
 #include "App.h"
 #include "ApplicationEvents.h"
@@ -10,9 +11,9 @@
 #include "ecs/example scripts/CameraController.h"
 #include "ecs/CameraComponent.h"
 
-#include "ecs/component_ptr.h"
+#include "ecs/component_ref.h"
+#include "network/netvar.h"
 
-using namespace eng;
 
 eng::Application* eng::CreateApplication()
 {
@@ -26,21 +27,30 @@ static float rz = 0;
 static std::array<std::shared_ptr<Texture2D>, 32> texs;
 
 Game::Game()
+	:client(nullptr)
 {
 	ApplicationEvents::OnRender.Bind(&Game::Update, this);
-
 	for (size_t i = 0; i < texs.size(); i++)
 	{
 		std::string texPath = GetVars().texturesLocation + std::to_string(i + 1) + ".jpg";
 		texs[i] = std::make_shared<eng::Texture2D>(texPath);
 	}
+	/*for (size_t i = 0; i < texs.size(); i++)
+	{
+		std::string texPath = GetVars().texturesLocation + std::to_string(i + 1) + ".jpg";
+		texs[i] = std::make_shared<eng::Texture2D>(texPath);
+	}
 
-	cam.AddComponent<TransformComponent>();
+	cam.AddComponent<TransformComponent>().position.z = 5.0f;
 	cam.AddComponent<CameraComponent>();
-	cam.AddComponent<ScriptComponent>().AddScript<CameraController>();
+	cam.AddComponent<ScriptComponent>().AddScript<FreeFlyCameraController>();
 
-	//Entity e;
+	Entity e;
 	e.AddComponent<TransformComponent>();
+	e.AddComponent<SpriteRendererComponent>().texture = texs[7];
+	e.GetComponent<TransformComponent>().scale = { 100.0f, 100.0f, 0.0f };
+
+	/*e.AddComponent<TransformComponent>();
 	e.AddComponent<SpriteRendererComponent>().texture = texs[7];
 	e.GetComponent<TransformComponent>().position = { 0.0f, 0.0f, 0.0f };
 	e.GetComponent<TransformComponent>().scale = { 15.0f, 15.0f, 1.0f };
@@ -83,27 +93,43 @@ Game::Game()
 	rotY.AddComponent<SpriteRendererComponent>().texture = texs[15];
 	rotZ.AddComponent<SpriteRendererComponent>().texture = texs[15];
 
-	/*for (size_t x = 0; x < 100; x++)
-	{
-		for (size_t y = 0; y < 100; y++)
-		{
-			Entity e;
-			e.AddComponent<TransformComponent>().position = { x * 50, y*50,0.0f };
-			e.GetComponent<TransformComponent>().scale = { 50, 50,1.0f };
-			e.AddComponent<SpriteRendererComponent>().texture = texs[17];
-		}
-	}*/
+	auto cmp = cam.GetComponentReactive<TransformComponent>();*/
 
+	Entity e;
+	e.AddComponent<TransformComponent>();
+	e.AddComponent<SpriteRendererComponent>().texture = texs[7];
+	e.GetComponent<TransformComponent>().scale = { 100.0f, 100.0f, 0.0f };
+
+	cam.AddComponent<TransformComponent>().position.z = 5.0f;
+	cam.AddComponent<CameraComponent>();
+	cam.AddComponent<ScriptComponent>().AddScript<FreeFlyCameraController>();
+
+	Packet p;
+	int x = 42;
+	p << x;
+
+	client = std::make_unique<Client>();
+
+	client->Connect("127.0.0.1", 7777);
+
+	//client->GetConnection()->Send(p);
+	//cl.Disconnect();
+
+	netvar<int> v;
+
+	v.OnValueAccessed += [] {
+		Logger::Log("netvar accesed");
+	};
+
+	*v.get_reactive() = 3;
+
+	Logger::Log("{}", *v.get());
 }
 
 void Game::Update()
 {
-	rotX.GetComponent<TransformComponent>().rotation.x += 100.0f * GameTime::GetDeltaTime();
-	rotY.GetComponent<TransformComponent>().rotation.y += 100.0f * GameTime::GetDeltaTime();
-	rotZ.GetComponent<TransformComponent>().rotation.z += 100.0f * GameTime::GetDeltaTime();
-
-	Logger::Log("AAA");
-	Logger::Warning("AAA");
-	Logger::Error("AAA");
-	Logger::CriticalError("AAA");
+	client->Tick();
+	//rotX.GetComponent<TransformComponent>().rotation.x += 100.0f * GameTime::GetDeltaTime();
+	//rotY.GetComponent<TransformComponent>().rotation.y += 100.0f * GameTime::GetDeltaTime();
+	//rotZ.GetComponent<TransformComponent>().rotation.z += 100.0f * GameTime::GetDeltaTime();
 }

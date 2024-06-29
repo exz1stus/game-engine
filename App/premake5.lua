@@ -21,6 +21,7 @@ project "App"
 		"%{wks.location}/Engine/vendor/glad",
 		"%{wks.location}/Engine/vendor/entt/single_include",
 		"%{IncludeDir.imgui}",
+		"%{wks.location}/Engine/vendor/enet/include",
 	}
 
 	libdirs

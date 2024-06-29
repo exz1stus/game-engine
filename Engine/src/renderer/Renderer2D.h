@@ -21,8 +21,8 @@ namespace eng
 		static void EndScene();
 		static void Flush();
 
-		static std::unique_ptr<Camera> _cam;
 	private:
+		static std::unique_ptr<Camera> _cam;
 		static void StartBatch();
 		static void NextBatch();
 
