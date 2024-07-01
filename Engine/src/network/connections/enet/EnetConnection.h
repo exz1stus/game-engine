@@ -6,10 +6,10 @@ namespace eng
 {
 	class EnetHost;
 
-	class EnetConnection : public IConnection
+	class EnetConnection : public IConnection, public std::enable_shared_from_this<EnetConnection>
 	{
 	public:
-		EnetConnection(ENetHost* owner);
+		EnetConnection(EnetHost* owner);
 		EnetConnection(ENetPeer* peer);
 		void Connect(const std::string& host, uint32_t port);
 		void Disconnect() override;
@@ -19,7 +19,7 @@ namespace eng
 		bool operator==(const IConnection& other) override;
 	private:
 		ENetPeer* _peer;
-		ENetHost* _owner;
-		//std::shared_ptr<EnetHost> _owner;
+		//ENetHost* _owner;
+		EnetHost* _owner;
 	};
 }

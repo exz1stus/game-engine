@@ -2,7 +2,7 @@
 #include "network/netvar.h"
 #include "core/EntryPoint.h"
 #include <random>
-#include "threading/Multithreading.h"
+#include "network/NetworkEvent.h"
 #include "renderer/Renderer2D.h"
 
 #include <list>
@@ -19,11 +19,29 @@ eng::Application* eng::CreateApplication()
 	return new ClientApp(RunningMode::Headless);
 }
 
+void func(int a, float b)
+{
+	Logger::Log("{}, {}", a, b);
+}
 
 ClientApp::ClientApp(RunningMode mode)
 	: Application(mode)
 {
-	Client cl;
+	std::shared_ptr<Client> cl = NetworkManager::CreateClient();
+	NetworkManager::StartNetworkLoop();
+
+	cl->Connect("127.0.0.1", 7777);
+
+	NetworkEvent<int,float> e;
+	
+	e += func;
+	
+	e.Invoke(123,2.018349f);
+
+	while (true)
+	{
+
+	}
 
 	/*netvar<int> var;
 	auto sc = var.getsc();
@@ -32,7 +50,7 @@ ClientApp::ClientApp(RunningMode mode)
 
 	sc.end();*/
 
-	glm::vec2 qwe = {1,2};
+	/*glm::vec2 qwe = {1,2};
 
 	reactive_ref<glm::vec2> p(&qwe);
 
@@ -54,7 +72,7 @@ ClientApp::ClientApp(RunningMode mode)
 	reactive_ptr<glm::vec2> rptr5 = rptr4;
 	reactive_ptr<glm::vec2> rptr6 = rptr5;  
 
-	rptr6.getsc() = { 2,3 };
+	rptr6.getsc() = { 2,3 };*/
 	/*cl.Connect("127.0.0.1", 7777);
 	while(true)
 	{

@@ -35,7 +35,35 @@ namespace eng
 			return packet;
 		}
 
+		template<typename DataT>
+		DataT GetFromTop(size_t byteShift = 0)
+		{
+			size_t startPos = body.size() - sizeof(DataT) - byteShift;
+			Logger::Assert(startPos < body.size(), "Byte shift exceeds the packet size");
+			Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet");
+			Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
 
+			return *reinterpret_cast<DataT*>(body.data() + startPos);
+		}
+
+		template<typename DataT>
+		DataT GetFromEnd(size_t byteShift = 0)
+		{
+			Logger::Assert(byteShift < body.size(), "Byte shift exceeds the packet size");
+			Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet");
+			Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
+
+			return *reinterpret_cast<DataT*>(body.data() + byteShift);
+		}
+
+		template<typename DataT>
+		DataT PopFromEnd(size_t byteShift = 0)
+		{
+			DataT data = GetFromEnd<DataT>(byteShift);
+			body.erase(body.begin() + byteShift, body.begin() + byteShift + sizeof(DataT));
+			return data;
+		}
+		
 		template<typename DataT>
 		friend Packet& operator << (Packet& packet, const DataT& data)
 		{

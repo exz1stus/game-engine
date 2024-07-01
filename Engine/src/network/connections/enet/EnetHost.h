@@ -3,6 +3,8 @@
 #include "network/Host.h"
 namespace eng
 {
+	class EnetConnection;
+
 	class EnetHost : public IHost
 	{
 	public:
@@ -12,6 +14,8 @@ namespace eng
 		bool IsCreated() const override { return _host != nullptr; }
 	protected:
 		ENetHost* _host;
+
+		friend EnetConnection;
 	};
 
 	class EnetClient : public EnetHost

@@ -64,7 +64,7 @@ namespace eng
 			Unsubscribe(listener);
 		}	
 
-		virtual void operator()(Args... args)
+		void operator()(Args... args)
 		{
 			Invoke(args...);
 		}

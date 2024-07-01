@@ -7,25 +7,57 @@
 
 namespace eng
 {
-	class inetvar_reciever
-	{
-	public:
-		virtual void on_value_recieved(Packet& packet) = 0;
-	};
-
+	template <typename T>
 	class NetworkRegistry
 	{
 	public:
-		static uint32_t AssignID(inetvar_reciever* reciever);
-		static void FreeID(uint32_t id);
-		//static void RecieveData(uint32_t id, Packet data);
+		static size_t AssignID(T* obj)
+		{
+			Logger::Assert(obj != nullptr, "Object is nullptr");
+
+			size_t id;
+			if (!_freeIDs.empty())
+			{
+				id = _freeIDs.top();
+				_freeIDs.pop();
+			}
+			else
+			{
+				id = _IDs;
+				_IDs++;
+			}
+
+			_registry[id] = obj;
+
+			return id;
+		}
+		static void FreeID(size_t id)
+		{
+			_freeIDs.push(id);
+			_registry[id] = nullptr;
+		}
+		static T* GetByID(size_t id) 
+		{
+			if(_registry.contains(id))
+				return _registry.at(id); 
+
+			Logger::Error("registry doesn't have the id {}", id);
+		}
 	private:
-		static std::unordered_map<uint32_t, inetvar_reciever*> _registry;
+		static std::unordered_map<size_t, T*> _registry;
 
-		static uint32_t _netVarIDs;
-		//static uint32_t _netEventsIDs;
+		static size_t _IDs;
 
-		static std::stack<uint32_t> _freeVarIDs;
-		//static std::stack<uint32_t> _freeEventIDs;
+		static std::stack<size_t> _freeIDs;
 	};
+
+	template <typename T>
+	size_t NetworkRegistry<T>::_IDs = 0;
+
+	template <typename T>
+	std::unordered_map<size_t, T*> NetworkRegistry<T>::_registry;
+
+	template <typename T>
+	std::stack<size_t> NetworkRegistry<T>::_freeIDs;
+
 }

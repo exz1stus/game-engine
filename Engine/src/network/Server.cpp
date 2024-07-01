@@ -1,36 +1,51 @@
 #include "engpch.h"
 #include "Server.h"
 
+#include "NetworkManager.h"
+
 namespace eng
 {
+	static size_t idCounter = 1;
+
 	void Server::Broadcast(Packet& packet)
 	{
 		for (auto& con : _connections)
 		{
-			con->Send(packet);
+			con.second->Send(packet);
+		}
+	}
+	void Server::ClientRpc(Packet& packet, ClientRpcHeader header, size_t localClient)
+	{
+		size_t sender = header.senderID;
+
+		for (auto& con : _connections)
+		{
+			if(con.first != sender && con.first != localClient)
+				con.second->Send(packet);
 		}
 	}
 	void Server::OnPacketRecieved(Packet& packet)
 	{
-		int x = 0;
-		Broadcast(packet);
-		packet >> x;
-		Logger::Log("Recieved a packet of size {}, data {}", packet.header.size, x);
+		NetworkManager::OnRecieved(packet);
 
 	}
 	void Server::OnConnected(std::shared_ptr<IConnection> con)
 	{
 		Logger::Log("New client has connected");
-		_connections.push_back(con);
+		_connections[idCounter] = con;
+
+		Packet p;
+		p.header.id = (int)NetworkMessages::AssignIDToClient;
+		p << idCounter;
+
+		con->Send(p);
+
+		idCounter++;
 	}
 	void Server::OnDisconnected(std::shared_ptr<IConnection> con)
 	{
 		Logger::Log("Client has diconnected");
 
-		//_connections.erase(std::remove_if(_connections.begin(), _connections.end(),
-		//	[con](const std::shared_ptr<IConnection>& other)s {
-		//		return con == other;
-		//	}));
-		//TODO : rewrite
+		//TODO : _connections.erase()
 	}
 }

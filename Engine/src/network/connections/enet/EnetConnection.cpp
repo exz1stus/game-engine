@@ -1,10 +1,12 @@
 #include "engpch.h"
 #include "EnetConnection.h"
+#include "EnetHost.h"
 namespace eng
 {
-	EnetConnection::EnetConnection(ENetHost* owner)
-		:_peer(nullptr), _owner(owner)
-	{}
+	EnetConnection::EnetConnection(EnetHost* owner)
+		: _peer(nullptr), _owner(owner)
+	{
+	}
 
 	EnetConnection::EnetConnection(ENetPeer* peer)
 		:_peer(peer), _owner(nullptr)
@@ -18,40 +20,44 @@ namespace eng
 		{
 			Logger::Error("Trying to connect in already established connection");
 			return;
-		}  
+		}
+		Logger::Assert(_owner != nullptr, "Trying to connect while host is nullptr");
 
-		ENetAddress address { 0 }; //typyj kusok zalupy blyad zajniaw w mene 10 jebanych godyn debuggowania c++ typa hujnia dla konczenych pidarasiw 9/
+		ENetAddress address{ 0 }; //typyj kusok zalupy blyad zajniaw w mene 10 jebanych godyn debuggowania c++ typa hujnia dla konczenych pidarasiw 9/
 		enet_address_set_host(&address, host.c_str());
 		address.port = port;
 
-		_peer = enet_host_connect(_owner, &address, 2, 0);
-
-		Logger::Assert(_peer != nullptr,"");
+		_peer = enet_host_connect(_owner->_host, &address, 2, 0);
 
 		if (!IsConnected())
 			Logger::Error("Failed to connect to host");
 
-		//////////////////////////////////////////
 		ENetEvent event;
 
-		if (enet_host_service(_owner, &event, 3000) > 0 &&
-			event.type == ENET_EVENT_TYPE_CONNECT)
+		enet_host_service(_owner->_host, &event, 3000);
+		if (event.type == ENET_EVENT_TYPE_CONNECT)
 		{
-			Logger::Log("Connection succeeded.");
-			//_owner->OnConnected(std::make_shared<IConnection>(this));
+			Logger::Log("Connection succeeded");
+			_owner->OnConnected(shared_from_this());
 		}
 		else
 		{
 			enet_peer_reset(_peer);
 			_peer = nullptr;
 			Logger::Error("Connection failed");
-			//_owner->OnDisconnected(std::make_shared<IConnection>(this));
+			_owner->OnDisconnected(shared_from_this());
 		}
+
+		//only for client
+		while (_owner->_hostID == 0)
+		{
+			_owner->Tick();
+		}	
 	}
 	void EnetConnection::Disconnect()
 	{
 		enet_peer_disconnect_now(_peer, 0);
-		//_owner->OnDisconnected(std::make_shared<IConnection>(this));
+		_owner->OnDisconnected(shared_from_this());
 		_peer = nullptr;
 	}
 	void EnetConnection::Send(Packet packet)
