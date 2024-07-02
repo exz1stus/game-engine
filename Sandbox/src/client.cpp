@@ -35,12 +35,14 @@ ClientApp::ClientApp(RunningMode mode)
 	NetworkEvent<int,float> e;
 	
 	e += func;
+
+	netvar<int> var;
 	
 	e.Invoke(123,2.018349f);
 
 	while (true)
 	{
-
+		Logger::Log("{}", var.get());
 	}
 
 	/*netvar<int> var;

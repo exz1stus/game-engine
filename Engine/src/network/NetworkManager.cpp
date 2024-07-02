@@ -9,6 +9,7 @@
 #include "network/Server.h"
 
 #include "network/NetworkRegistry.h"
+#include "netvar.h"
 //#include "network/NetworkEvent.h"
 
 namespace eng
@@ -24,12 +25,13 @@ namespace eng
 	std::shared_ptr<Client> NetworkManager::_client;
 	std::shared_ptr<Server> NetworkManager::_internalServer;
 
-
 	static std::unique_ptr<std::thread> networkThread;
 	static std::mutex networkMutex;
 	static std::atomic<bool> running = false;
 
 	static std::thread::id networkThreadID;
+
+	static size_t clientID = 0;
 
 	void NetworkManager::Init()
 	{
@@ -103,21 +105,22 @@ namespace eng
 
 	void NetworkManager::AddNetworkEvent(Packet& p)
 	{
-		if (HasClient())
+		if (HasClient() && _state != HostState::ClientServer)
 		{
 			_netEventsQueue.push(p);
 			return;
 		}
 
-		if (HasServer() && 
-			(_state == HostState::OnlyServer || IsCallingFromServerThread()))
-				_serverNetEventsQueue.push(p);
+		if (HasServer() /*&&
+			(_state == HostState::OnlyServer || IsCallingFromServerThread())*/)
+			_serverNetEventsQueue.push(p);
 	}
 
 	void NetworkManager::OnRecieved(Packet& p)
 	{
 		switch ((NetworkMessages)p.header.id)
 		{
+		case NetworkMessages::EventNetvarUpdated:
 		case NetworkMessages::EventClientRPC:
 			if (HasServer())
 			{
@@ -125,7 +128,7 @@ namespace eng
 
 				ClientRpcHeader header = p.GetFromEnd<ClientRpcHeader>(idShift);
 
-				if(HasClient())
+				if (HasClient())
 				{
 					size_t localClient = _client->_hostID;
 					_internalServer->ClientRpc(p, header, localClient);
@@ -140,8 +143,6 @@ namespace eng
 				inetevent_reciever* reciever = NetworkRegistry<inetevent_reciever>::GetByID(id);
 				reciever->on_recieved(p);
 			}
-			break;
-		case NetworkMessages::EventNetvarUpdated:
 			break;
 		default:
 			break;
@@ -159,7 +160,7 @@ namespace eng
 
 	bool NetworkManager::IsCallingFromServerThread()
 	{
-		if(running && HasServer())
+		if (running && HasServer())
 			return std::this_thread::get_id() == networkThreadID;
 	}
 
@@ -188,6 +189,10 @@ namespace eng
 	{
 		if (HasClient() && _client->_hostID != 0)
 		{
+			if (clientID == 0)
+				clientID = _client->_hostID;
+			
+
 			while (!_netEventsQueue.empty())
 			{
 				Packet& p = _netEventsQueue.front();
@@ -197,13 +202,12 @@ namespace eng
 			_client->Tick();
 		}
 
-
 		if (HasServer())
 		{
 			while (!_serverNetEventsQueue.empty())
 			{
 				Packet& p = _serverNetEventsQueue.front();
-				_internalServer->ClientRpc(p, {0});
+				_internalServer->ClientRpc(p, { 0 }, clientID);
 				_serverNetEventsQueue.pop();
 			}
 			_internalServer->Tick();

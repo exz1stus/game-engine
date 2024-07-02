@@ -26,6 +26,7 @@ namespace eng
 	}
 	void Server::OnPacketRecieved(Packet& packet)
 	{
+		Logger::Log("Server : recieved a packet of size {}", packet.header.size);
 		NetworkManager::OnRecieved(packet);
 
 	}

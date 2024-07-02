@@ -2,45 +2,40 @@
 #include "misc/reactive_ptr.h"
 #include "NetworkManager.h"
 #include "NetworkRegistry.h"
+#include "NetworkEvent.h"
 #include <iostream>
 
 namespace eng
 {
-	class inetvar_reciever
-	{
-	public:
-		virtual void on_value_recieved(Packet& packet) = 0;
-	};
-
 	template<typename T>
-	class netvar : public reactive_ptr<T>, inetvar_reciever
+	class netvar : public reactive_ptr<T>
 	{
 	public:
 		netvar()
 		{
-			id = NetworkRegistry::AssignID<inetvar_reciever>((inetvar_reciever*)this);
-		}
-		~netvar()
-		{
-			NetworkRegistry<inetvar_reciever>::FreeID(id);
+			NetOnModified.Bind(&netvar<T>::on_recieved, this);
 		}
 
-		void on_value_recieved(Packet& p) override
+		void on_recieved(const T data)
 		{
-			T data;
-			p >> data;
-
-			//set(data);
+			if (isInvoker)
+			{
+				isInvoker = false;
+				return;
+			}
+			reactive_ptr<T>::set(data);
 		}
 	private:
-		uint32_t id;
+		//uint32_t id;
+
+		NetworkEvent<T> NetOnModified;
+
+		bool isInvoker = false; // EEW WWQ QWE
 
 		void on_modified() override
 		{
-			Packet p;
-			//p << get();
-
-			//NetworkManager::SendToServer();
+			isInvoker = true;
+			NetOnModified.InvokeParams((int)NetworkMessages::EventNetvarUpdated, reactive_ptr<T>::get());
 		}
 	};
 }

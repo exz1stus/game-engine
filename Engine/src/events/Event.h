@@ -5,9 +5,8 @@ namespace eng
 	template<typename... Args>
 	class Event
 	{
-		using EventListener = std::function<void(Args...)>;
-
 	public:
+		using EventListener = std::function<void(Args...)>;
 		Event() = default;
 		Event(const EventListener& listener)
 		{

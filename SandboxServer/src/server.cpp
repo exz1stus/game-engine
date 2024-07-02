@@ -2,45 +2,50 @@
 #include "network/Client.h"
 #include "network/NetworkManager.h"
 #include "network/NetworkEvent.h"
+#include "network/netvar.h"
 using namespace eng;
 
 class ServerApp : public Application
 {
 public:
-    ServerApp(RunningMode mode);
+	ServerApp(RunningMode mode);
 };
 
 eng::Application* eng::CreateApplication()
 {
-    return new ServerApp(RunningMode::Headless);
+	return new ServerApp(RunningMode::Headless);
 }
 
 void func(int a, float b)
 {
-    Logger::Log("{}, {}", a, b);
+	Logger::Log("{}, {}", a, b);
 }
 
 ServerApp::ServerApp(RunningMode mode)
-    :Application(mode)
+	:Application(mode)
 {
-    NetworkManager::CreateInternalServer();
-    NetworkManager::StartNetworkLoop();
+	NetworkManager::CreateInternalServer();
+	NetworkManager::StartNetworkLoop();
 
-    //std::shared_ptr<Client> cl = NetworkManager::CreateClient();
+	std::shared_ptr<Client> cl = NetworkManager::CreateClient();
 
-    NetworkEvent<int, float> e;
+	NetworkEvent<int, float> e;
 
-    e += func;
+	e += func;
 
-    while (1)
-    {
-        e(999, 99.99f);
-        Sleep(1000);
-    }
+	netvar<int> var;
 
-    /*cl->Connect("127.0.0.1", 7777);
-    while (true)
-        cl->Tick();
+	int a = 1;
 
-    cl->Disconnect();*/
+	cl->Connect("127.0.0.1", 7777);
+
+	e(999, 99.99f);
+
+	while (1)
+	{
+		var.getsc() = a;
+		a++;
+		Sleep(1000);
+	}
+
 }
