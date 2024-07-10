@@ -39,9 +39,14 @@ namespace eng
 		DataT GetFromTop(size_t byteShift = 0)
 		{
 			size_t startPos = body.size() - sizeof(DataT) - byteShift;
-			Logger::Assert(startPos < body.size(), "Byte shift exceeds the packet size");
-			Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet");
-			Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
+
+			bool asserted =
+				Logger::Assert(byteShift < body.size(), "Byte shift exceeds the packet size") &&
+				Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet") &&
+				Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
+
+			if (asserted)
+				throw;
 
 			return *reinterpret_cast<DataT*>(body.data() + startPos);
 		}
@@ -49,9 +54,13 @@ namespace eng
 		template<typename DataT>
 		DataT GetFromEnd(size_t byteShift = 0)
 		{
-			Logger::Assert(byteShift < body.size(), "Byte shift exceeds the packet size");
-			Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet");
-			Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
+			bool asserted =
+				Logger::Assert(byteShift < body.size(), "Byte shift exceeds the packet size") &&
+				Logger::Assert(body.size() >= sizeof(DataT) + byteShift, "Data size is bigger than the packet") &&
+				Logger::Assert(std::is_standard_layout<DataT>::value, "Data is too complex to deserialize");
+
+			if (asserted)
+				throw;
 
 			return *reinterpret_cast<DataT*>(body.data() + byteShift);
 		}
@@ -60,6 +69,9 @@ namespace eng
 		DataT PopFromEnd(size_t byteShift = 0)
 		{
 			DataT data = GetFromEnd<DataT>(byteShift);
+
+			if (!data) return data;
+
 			body.erase(body.begin() + byteShift, body.begin() + byteShift + sizeof(DataT));
 			return data;
 		}

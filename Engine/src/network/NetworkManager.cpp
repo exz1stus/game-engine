@@ -10,16 +10,15 @@
 
 #include "network/NetworkRegistry.h"
 #include "netvar.h"
-//#include "network/NetworkEvent.h"
 
 namespace eng
 {
 	struct ClientRpcHeader;
 
-	uint8_t NetworkManager::_tickrate = 20;
+	uint8_t NetworkManager::_tickrate = 60;
 
-	std::queue<Packet> NetworkManager::_netEventsQueue;
-	std::queue<Packet> NetworkManager::_serverNetEventsQueue;
+	std::queue<NetworkMessage> NetworkManager::_netEventsQueue;
+	std::queue<NetworkMessage> NetworkManager::_serverNetEventsQueue;
 	HostState NetworkManager::_state = HostState::Offline;
 
 	std::shared_ptr<Client> NetworkManager::_client;
@@ -103,7 +102,7 @@ namespace eng
 		return _internalServer;
 	}
 
-	void NetworkManager::AddNetworkEvent(Packet& p)
+	void NetworkManager::AddNetworkEvent(NetworkMessage& p)
 	{
 		if (HasClient() && _state != HostState::ClientServer)
 		{
@@ -125,8 +124,14 @@ namespace eng
 			if (HasServer())
 			{
 				size_t idShift = sizeof(size_t);
-
-				ClientRpcHeader header = p.GetFromEnd<ClientRpcHeader>(idShift);
+				ClientRpcHeader header;
+				try
+				{
+					header = p.GetFromEnd<ClientRpcHeader>(idShift);
+				}
+				catch (...) {
+					break;
+				}
 
 				if (HasClient())
 				{
@@ -191,12 +196,12 @@ namespace eng
 		{
 			if (clientID == 0)
 				clientID = _client->_hostID;
-			
+
 
 			while (!_netEventsQueue.empty())
 			{
-				Packet& p = _netEventsQueue.front();
-				_client->GetConnection()->Send(p);
+				auto& msg = _netEventsQueue.front();
+				_client->GetConnection()->Send(msg.GetData());
 				_netEventsQueue.pop();
 			}
 			_client->Tick();
@@ -206,10 +211,28 @@ namespace eng
 		{
 			while (!_serverNetEventsQueue.empty())
 			{
-				Packet& p = _serverNetEventsQueue.front();
-				_internalServer->ClientRpc(p, { 0 }, clientID);
+				auto& msg = _serverNetEventsQueue.front();
+				_internalServer->ClientRpc(msg.GetData(), { 0 }, clientID);
 				_serverNetEventsQueue.pop();
 			}
+			_internalServer->Tick();
+		}
+	}
+
+	void NetworkManager::CustomTick(NetworkMessage& msg)
+	{
+		if (HasClient() && _client->_hostID != 0)
+		{
+			if (clientID == 0)
+				clientID = _client->_hostID;
+
+			_client->GetConnection()->Send(msg.GetData());
+			_client->Tick();
+		}
+
+		if (HasServer())
+		{
+			_internalServer->ClientRpc(msg.GetData(), { 0 }, clientID);
 			_internalServer->Tick();
 		}
 	}

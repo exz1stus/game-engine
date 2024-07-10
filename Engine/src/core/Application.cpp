@@ -10,6 +10,7 @@
 #include "assets/AssetManager.h"
 #include "ecs/SceneManager.h"
 #include "network/NetworkManager.h"
+#include "input/Input.h"
 
 namespace eng
 {
@@ -34,6 +35,7 @@ namespace eng
 		if (_mode == RunningMode::GUIApplication)
 		{
 			ApplicationEvents::OnInit += RenderingAPI::Init;
+			ApplicationEvents::OnInit += Input::Init;
 			ApplicationEvents::OnInit += AssetManager::Init;
 			ApplicationEvents::OnInit += Renderer2D::Init;
 			ApplicationEvents::OnInit += ImguiManager::Init;

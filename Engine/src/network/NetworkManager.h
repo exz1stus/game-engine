@@ -1,6 +1,7 @@
 #pragma once
 #include <queue>
 #include "NetworkPacket.h"
+#include "NetworkMessage.h"
 namespace eng
 {
 
@@ -32,13 +33,15 @@ namespace eng
 		static std::shared_ptr<Client> CreateClient();
 		static std::shared_ptr<Server> CreateInternalServer();
 		
-		static void AddNetworkEvent(Packet& p);
+		static void AddNetworkEvent(NetworkMessage& msg);
 
 		static void OnRecieved(Packet& p);
 
 		static size_t GetHostID();
 
 		static bool IsCallingFromServerThread();
+
+		static void CustomTick(NetworkMessage& p);
 	private:
 		static bool HasServer() { return _state == HostState::OnlyServer || _state == HostState::ClientServer; }
 		static bool HasClient() { return _state == HostState::OnlyClient || _state == HostState::ClientServer; }
@@ -48,8 +51,8 @@ namespace eng
 		static uint8_t _tickrate;
 		static HostState _state;
 
-		static std::queue<Packet> _netEventsQueue;
-		static std::queue<Packet> _serverNetEventsQueue;
+		static std::queue<NetworkMessage> _netEventsQueue;
+		static std::queue<NetworkMessage> _serverNetEventsQueue;
 
 		static std::shared_ptr<Client> _client;
 

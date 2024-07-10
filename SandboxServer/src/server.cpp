@@ -43,7 +43,7 @@ ServerApp::ServerApp(RunningMode mode)
 
 	while (1)
 	{
-		var.getsc() = a;
+		*var = a;
 		a++;
 		Sleep(1000);
 	}

@@ -29,7 +29,7 @@ namespace eng
 
 		_peer = enet_host_connect(_owner->_host, &address, 2, 0);
 
-		if (!IsConnected())
+		if (!_peer)
 			Logger::Error("Failed to connect to host");
 
 		ENetEvent event;
@@ -46,6 +46,7 @@ namespace eng
 			_peer = nullptr;
 			Logger::Error("Connection failed");
 			_owner->OnDisconnected(shared_from_this());
+			return;
 		}
 
 		//only for client
@@ -60,7 +61,7 @@ namespace eng
 		_owner->OnDisconnected(shared_from_this());
 		_peer = nullptr;
 	}
-	void EnetConnection::Send(Packet packet)
+	void EnetConnection::Send(Packet& packet)
 	{
 		if (!IsConnected())
 		{

@@ -45,7 +45,7 @@ namespace eng
 
 		_window->MakeCurrentContext();
 		_window->BindWindowCallbacks();
-		_window->DisableCursor();
+		//_window->DisableCursor();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{

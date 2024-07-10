@@ -42,20 +42,17 @@ namespace eng
 			InvokeParams((int)NetworkMessages::EventClientRPC, args...);
 		}
 
-		void InvokeParams(int param, Args... args)
+		void InvokeParams(int type, Args... args)
 		{
-			Packet packet;
-			packet.header.id = param;
-			packet << eventID;
+			NetworkMessage msg(GetInvokePacket(type, args...));
+			NetworkManager::AddNetworkEvent(msg);
+			InvokeLocally(args...);
+		}
 
-			ClientRpcHeader header;
-			header.senderID = NetworkManager::GetHostID();
-
-			packet << header;
-
-			(packet << ... << args);
-
-			NetworkManager::AddNetworkEvent(packet);
+		void InvokeParams(NetworkMessage& msg, int type, Args... args)
+		{
+			msg._data = GetInvokePacket(type, args...);
+			NetworkManager::AddNetworkEvent(msg);
 			InvokeLocally(args...);
 		}
 
@@ -64,13 +61,20 @@ namespace eng
 			Event<Args...>::Invoke(args...);
 		}
 
-
-		template<typename T>
-		void Bind(void (T::* method)(Args...), T* object)
+		Packet GetInvokePacket(int type, Args... args)
 		{
-			Event<Args...>::Bind(method, object);
-		}
+			Packet packet;
+			packet.header.id = type;
+			packet << eventID;
 
+			ClientRpcHeader header;
+			header.senderID = NetworkManager::GetHostID();
+
+			packet << header;
+
+			(packet << ... << args);
+			return packet;
+		}
 	private:
 		size_t eventID;
 

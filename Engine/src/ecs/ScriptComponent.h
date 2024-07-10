@@ -36,6 +36,14 @@ namespace eng
 			DestroyFunction(_scriptInstance);
 		}
 
+		template <typename T>
+		T& GetScript()
+		{
+			Logger::Assert(_scriptInstance, "Script instance is nullptr");
+
+			return *dynamic_cast<T*>(_scriptInstance);
+		}
+
 	private:
 		BehaviourScript* (*InstantiateFunction)();
 		void (*DestroyFunction)(BehaviourScript* instance);

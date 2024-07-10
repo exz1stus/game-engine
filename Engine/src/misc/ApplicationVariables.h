@@ -2,7 +2,7 @@
 #include <string>
 struct ApplicationVariables
 {
-#define DEBUG_RENDERDOC 1
+#define DEBUG_RENDERDOC 0
  
 #if DEBUG_RENDERDOC
 	std::string texturesLocation = "../Engine/assets/textures/";

@@ -24,6 +24,11 @@ void func(int a, float b)
 	Logger::Log("{}, {}", a, b);
 }
 
+void netVarModified()
+{
+	Logger::Log("pipipapapipi");
+}
+
 ClientApp::ClientApp(RunningMode mode)
 	: Application(mode)
 {
@@ -38,11 +43,15 @@ ClientApp::ClientApp(RunningMode mode)
 
 	netvar<int> var;
 	
+	var.GetOnModified() += netVarModified;
+
 	e.Invoke(123,2.018349f);
+
+	*var = 12;
 
 	while (true)
 	{
-		Logger::Log("{}", var.get());
+		
 	}
 
 	/*netvar<int> var;

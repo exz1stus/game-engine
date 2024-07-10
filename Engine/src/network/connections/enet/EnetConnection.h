@@ -13,7 +13,7 @@ namespace eng
 		EnetConnection(ENetPeer* peer);
 		void Connect(const std::string& host, uint32_t port);
 		void Disconnect() override;
-		void Send(Packet packet) override;
+		void Send(Packet& packet) override;
 		bool IsConnected() const override { return _peer != nullptr; }
 
 		bool operator==(const IConnection& other) override;
@@ -21,5 +21,7 @@ namespace eng
 		ENetPeer* _peer;
 		//ENetHost* _owner;
 		EnetHost* _owner;
+
+		bool _connected = false;
 	};
 }

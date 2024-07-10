@@ -15,5 +15,8 @@ private:
 	std::unique_ptr<Client> client;
 	eng::Entity cam;
 
+	void Start();
 	void Update();
+
+	bool started = false;
 };

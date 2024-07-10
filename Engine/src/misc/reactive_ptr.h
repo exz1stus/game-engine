@@ -70,9 +70,14 @@ namespace eng
 
 		operator const T* () const { return &get(); }
 
-		const T& operator*() const
+		/*const T& operator*() const
 		{
 			return get();
+		}*/
+
+		scoped_data_holder<T, reactive_ptr<T>> operator*()
+		{
+			return scoped_data_holder<T, reactive_ptr<T>>(this);
 		}
 
 		scoped_data_holder<T, reactive_ptr<T>> operator->()
