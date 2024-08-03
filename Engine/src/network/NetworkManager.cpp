@@ -13,6 +13,15 @@
 
 namespace eng
 {
+	struct NetworkStats
+	{
+		uint32_t packetsRecieved;
+		uint32_t packetsLost;
+		uint32_t currentTick;
+	};
+
+	static NetworkStats netStats;
+
 	struct ClientRpcHeader;
 
 	uint8_t NetworkManager::_tickrate = 60;
@@ -130,8 +139,12 @@ namespace eng
 					header = p.GetFromEnd<ClientRpcHeader>(idShift);
 				}
 				catch (...) {
+					netStats.packetsLost++;
+					Logger::Error("Lost a packet");
 					break;
 				}
+
+				netStats.packetsRecieved++;
 
 				if (HasClient())
 				{
@@ -143,7 +156,17 @@ namespace eng
 			}
 			if (HasClient())
 			{
-				size_t id = p.PopFromEnd<size_t>();
+				size_t id;
+				try
+				{
+					id = p.PopFromEnd<size_t>();
+				}
+				catch (...)
+				{
+					netStats.packetsLost++;
+					Logger::Error("Lost a packet");
+					break;
+				}
 
 				inetevent_reciever* reciever = NetworkRegistry<inetevent_reciever>::GetByID(id);
 				reciever->on_recieved(p);
@@ -217,6 +240,12 @@ namespace eng
 			}
 			_internalServer->Tick();
 		}
+
+		netStats.currentTick++;
+		if (netStats.currentTick > _tickrate)
+			netStats.currentTick = 0;
+
+		//Logger::Log("Tick : {} \n Packets Lost : {}", netStats.currentTick, netStats.packetsLost);
 	}
 
 	void NetworkManager::CustomTick(NetworkMessage& msg)

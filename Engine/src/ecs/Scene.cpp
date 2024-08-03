@@ -11,7 +11,7 @@ namespace eng
 {
 	static void RemoveScriptCallback(entt::registry& registry, Entity entity)
 	{
-		entity.GetComponent<ScriptComponent>().RemoveScript();
+		entity.GetComponent<ScriptComponent>().DestroyScripts();
 	}
 
 	static entt::observer camObserver;
@@ -45,13 +45,23 @@ namespace eng
 		{
 			auto& script = entity.GetComponent<ScriptComponent>();
 
-			if (!script._scriptInstance)
+			if (!script.instantiated)
 			{
-				script._scriptInstance = script.InstantiateFunction();
-				script._scriptInstance->id = entity;
-				script._scriptInstance->OnInit();
+				while (!script._scriptsToInstantiate.empty())
+				{
+					InstantiateFunctionPtr& func = script._scriptsToInstantiate.top();
+					auto instance = func(&script);
+					instance->id = entity;
+					instance->OnInit();
+					script._scriptsToInstantiate.pop();
+				}
+				script.instantiated = true;
 			}
-			script._scriptInstance->OnUpdate();
+
+			for (const auto& [type, ptr] : script._scripts)
+			{
+				ptr->OnUpdate();
+			}
 		}
 	}
 	void Scene::Render()
@@ -70,7 +80,7 @@ namespace eng
 	}
 	void Scene::DrawMenu()
 	{
-		SetMenuName("Scene Inspector");		
+		SetMenuName("Scene Inspector");
 
 		auto view = _registry.view<TransformComponent>();
 		//ImGui::Text("asd");

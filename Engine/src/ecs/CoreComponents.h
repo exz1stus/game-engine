@@ -32,11 +32,11 @@ namespace eng
 		glm::quat GetRotation() const
 		{
 			return glm::quat(glm::radians(rotation));
-			glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0, 1.0f, 0));
-			glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0, 0));
-			glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0, 0, -1.0f));
-			//return glm::normalize(qYaw * qRoll * qPitch);
-			return glm::normalize(qYaw * qPitch * qRoll);
+			//glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0, 1.0f, 0));
+			//glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0, 0));
+			//glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0, 0, -1.0f));
+			////return glm::normalize(qYaw * qRoll * qPitch);
+			//return glm::normalize(qYaw * qPitch * qRoll);
 		}
 
 		glm::mat4 GetRotationMat4() const

@@ -37,7 +37,7 @@ namespace eng
 			return;
 		}
 
-		Logger::Log("Client : Recieved a packet of size {}", packet.header.size);
+		//Logger::Log("Client : Recieved a packet of size {}", packet.header.size);
 		NetworkManager::OnRecieved(packet);
 	}
 

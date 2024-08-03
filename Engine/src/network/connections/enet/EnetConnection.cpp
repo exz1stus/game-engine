@@ -34,7 +34,7 @@ namespace eng
 
 		ENetEvent event;
 
-		enet_host_service(_owner->_host, &event, 3000);
+		enet_host_service(_owner->_host, &event, 1000);
 		if (event.type == ENET_EVENT_TYPE_CONNECT)
 		{
 			Logger::Log("Connection succeeded");

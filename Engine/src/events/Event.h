@@ -28,7 +28,7 @@ namespace eng
 		void Unsubscribe(const EventListener& listener)
 		{
 			auto it = std::find_if(_listeners.begin(), _listeners.end(), [&](const EventListener& el) {
-				return el.target<void(Args...)>() == listener.target<void(Args...)>();			//TODO : bug? remove func by its declaration
+				return el.target<void(Args...)>() == listener.target<void(Args...)>();			//TODO : bug?
 				});
 
 			if (it != _listeners.end())
@@ -67,8 +67,6 @@ namespace eng
 		{
 			Invoke(args...);
 		}
-
-		// TODO
 
 		operator EventListener() const { return Invoke; }
 

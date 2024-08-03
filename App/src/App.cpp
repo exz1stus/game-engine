@@ -11,6 +11,7 @@
 #include "PlayerController.h"
 #include "ecs/CameraComponent.h"
 
+#include "network/components/NetTransformComponent.h"
 #include "ecs/component_ref.h"
 #include "network/NetworkManager.h"
 
@@ -53,14 +54,18 @@ Game::Game()
 	Entity player;
 	player.AddComponent<TransformComponent>();
 	player.AddComponent<SpriteRendererComponent>().texture = texs[7];
-	player.GetComponent<TransformComponent>().scale = { 20.0f, 20.0f, 0.0f };
-	player.AddComponent<ScriptComponent>().AddScript<PlayerController>();
+	player.GetComponent<TransformComponent>().scale = { 50.0f, 50.0f, 0.0f };
+	auto& scriptHodler = player.AddComponent<ScriptComponent>();
+	scriptHodler.AddScript<PlayerController>();
+	scriptHodler.AddScript<NetTransform>();
 	
 	Entity player2;
 	player2.AddComponent<TransformComponent>();
 	player2.AddComponent<SpriteRendererComponent>().texture = texs[8];
-	player2.GetComponent<TransformComponent>().scale = { 20.0f, 20.0f, 0.0f };
-	player2.AddComponent<ScriptComponent>().AddScript<PlayerController>();
+	player2.GetComponent<TransformComponent>().scale = { 50.0f, 50.0f, 0.0f };
+	auto& scriptHodler2 = player2.AddComponent<ScriptComponent>();
+	scriptHodler2.AddScript<PlayerController>();
+	scriptHodler2.AddScript<NetTransform>();
 }
 
 void Game::Start()

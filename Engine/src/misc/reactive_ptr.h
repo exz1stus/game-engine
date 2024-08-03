@@ -101,6 +101,11 @@ namespace eng
 			_shared->OnModified();
 		}
 
+		void set_silent(const T& newValue)
+		{
+			*_shared->_ptr = newValue;
+		}
+
 		void update()
 		{
 			on_modified();
@@ -112,11 +117,6 @@ namespace eng
 		virtual void on_modified() {}
 	private:
 		std::shared_ptr<shared_data<T>> _shared;
-
-		void set_silent(const T& newValue)
-		{
-			*_shared->_ptr = newValue;
-		}
 
 		T* get_rawptr()
 		{
@@ -137,6 +137,11 @@ namespace eng
 		}
 
 		reactive_ref(const reactive_ref& other) = delete;
+
+		void create(T* ref)
+		{
+			_ptr = ref;
+		}
 
 		reactive_ref& operator=(const T& value)
 		{

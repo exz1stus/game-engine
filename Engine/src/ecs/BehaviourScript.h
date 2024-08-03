@@ -12,7 +12,7 @@ namespace eng
 		const Entity GetAttachedEntity() const { return id; }
 
 	protected:
-		//wrappers for convinient scripting
+		//wrappers for convenient scripting
 		template<typename T>
 		T& GetComponent() const
 		{

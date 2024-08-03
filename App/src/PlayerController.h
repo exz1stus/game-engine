@@ -1,6 +1,7 @@
 #pragma once
 #include "eng.h"
 #include "network/netvar.h"
+#include "network/components/NetTransformComponent.h"
 #include "ecs/component_ref.h"
 
 using namespace eng;
@@ -11,12 +12,10 @@ public:
 	void OnInit() override;
 	void OnUpdate() override;
 
-	ls_netvar<glm::vec3> netPosition;
 	bool isMine = false;
-
 private:
-	cmp_ref<TransformComponent> transform;
+	NetTransform transform;
 
-	float moveSpeed = 700.0f;
+	float moveSpeed = 500.0f;
 };
 

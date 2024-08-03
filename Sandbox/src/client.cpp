@@ -1,11 +1,14 @@
-#include "network/Client.h"
-#include "network/netvar.h"
+//#include "network/Client.h"
+//#include "network/netvar.h"
 #include "core/EntryPoint.h"
-#include <random>
-#include "network/NetworkEvent.h"
-#include "renderer/Renderer2D.h"
+#include "core/eng.h"
+//#include <random>
+//#include "network/NetworkEvent.h"
+//#include "renderer/Renderer2D.h"
+//
+//#include <list>
+#include "ecs/BehaviourScript.h"
 
-#include <list>
 using namespace eng;
 
 class ClientApp : public Application
@@ -19,81 +22,39 @@ eng::Application* eng::CreateApplication()
 	return new ClientApp(RunningMode::Headless);
 }
 
-void func(int a, float b)
+class Sc1 : public BehaviourScript
 {
-	Logger::Log("{}, {}", a, b);
-}
+public:
+	void OnInit() override
+	{
+		value.create(&val);
+		Logger::Log("Script 1 init");
+		value.OnModified += []() { Logger::Log("modified"); };
+	}
 
-void netVarModified()
+	reactive_ref<int> value;
+private:
+	int val;
+};
+class Sc2 : public BehaviourScript
 {
-	Logger::Log("pipipapapipi");
-}
+public:
+	void OnInit() override
+	{
+		Logger::Log("Script 2 init");
+	}
+};
 
 ClientApp::ClientApp(RunningMode mode)
 	: Application(mode)
 {
-	std::shared_ptr<Client> cl = NetworkManager::CreateClient();
-	NetworkManager::StartNetworkLoop();
+	Entity e;
 
-	cl->Connect("127.0.0.1", 7777);
+	auto& transform = e.AddComponent<TransformComponent>();
+	auto& scriptHolder = e.AddComponent<ScriptComponent>();
+	scriptHolder.AddScript<Sc1>();
+	scriptHolder.AddScript<Sc2>();
 
-	NetworkEvent<int,float> e;
-	
-	e += func;
-
-	netvar<int> var;
-	
-	var.GetOnModified() += netVarModified;
-
-	e.Invoke(123,2.018349f);
-
-	*var = 12;
-
-	while (true)
-	{
-		
-	}
-
-	/*netvar<int> var;
-	auto sc = var.getsc();
-
-	sc = 1;
-
-	sc.end();*/
-
-	/*glm::vec2 qwe = {1,2};
-
-	reactive_ref<glm::vec2> p(&qwe);
-
-	p.OnModified += [&p]() {
-		Logger::Log("New Value {}", (*p).x);
-	};
-
-	p = { 4.0f, 2.0f };
-
-	reactive_ptr<glm::vec2> rptr;
-
-	rptr.GetOnModified() += []() {
-		Logger::Log("Modified");
-	};
-
-	reactive_ptr<glm::vec2> rptr2 = rptr;
-	reactive_ptr<glm::vec2> rptr3 = rptr2;
-	reactive_ptr<glm::vec2> rptr4 = rptr3;
-	reactive_ptr<glm::vec2> rptr5 = rptr4;
-	reactive_ptr<glm::vec2> rptr6 = rptr5;  
-
-	rptr6.getsc() = { 2,3 };*/
-	/*cl.Connect("127.0.0.1", 7777);
-	while(true)
-	{
-		Packet p;
-		int x = rand() % 100 + 1;
-		p << x;
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
-		cl.GetConnection()->Send(p);
-		cl.Tick();
-	}
-
-	cl.Disconnect();*/
+	auto& sc1 = scriptHolder.GetScript<Sc1>();
+	sc1.value = 2;
 }

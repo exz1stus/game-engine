@@ -3,11 +3,7 @@
 
 void PlayerController::OnInit()
 {
-	transform = GetComponentReactive<TransformComponent>();
-
-	netPosition.GetOnModified() += [this]() {
-		transform->position = netPosition.get();
-	};
+	transform = GetComponent<ScriptComponent>().GetScript<NetTransform>();
 }
 
 void PlayerController::OnUpdate()
@@ -26,5 +22,5 @@ void PlayerController::OnUpdate()
 		return;
 
 	movement = glm::normalize(movement) * moveSpeed * (float)GameTime::GetDeltaTime();
-	netPosition.getsc() = netPosition.get() + movement;
+	transform.position.getsc() = transform.position.get() + movement;
 }
