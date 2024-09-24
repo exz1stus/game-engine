@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Scene.h"
+#include "physics/2d/PhysWorld.h"
 namespace eng
 {
 	class CameraComponent;
@@ -11,12 +12,8 @@ namespace eng
 	public:
 		static void Init();
 		static std::shared_ptr<Scene> GetCurrentScene() { return _currentScene; }
-		static std::shared_ptr<Camera> GetMainCamera() { return _mainCamera; }
 	private:
-
 		static std::shared_ptr<Scene> _currentScene;
-		static std::shared_ptr<Camera> _mainCamera;
-		friend class CameraComponent;
 	};
 }
 

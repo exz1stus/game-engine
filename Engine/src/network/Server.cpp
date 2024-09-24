@@ -24,10 +24,10 @@ namespace eng
 				con.second->Send(packet);
 		}
 	}
-	void Server::OnPacketRecieved(Packet& packet)
+	void Server::OnPacketReceived(Packet& packet)
 	{
 		Logger::Log("Server : recieved a packet of size {}", packet.header.size);
-		NetworkManager::OnRecieved(packet);
+		NetworkManager::OnReceived(packet);
 
 	}
 	void Server::OnConnected(std::shared_ptr<IConnection> con)
@@ -45,7 +45,7 @@ namespace eng
 	}
 	void Server::OnDisconnected(std::shared_ptr<IConnection> con)
 	{
-		Logger::Log("Client has diconnected");
+		Logger::Log("Client has disconnected");
 
 		//TODO : _connections.erase()
 	}

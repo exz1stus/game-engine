@@ -16,6 +16,6 @@ public:
 private:
 	NetTransform transform;
 
-	float moveSpeed = 500.0f;
+	float moveSpeed = 50.0f;//500.0f;
 };
 

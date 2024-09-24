@@ -15,7 +15,7 @@ namespace eng
 {
 	struct NetworkStats
 	{
-		uint32_t packetsRecieved;
+		uint32_t packetsReceived;
 		uint32_t packetsLost;
 		uint32_t currentTick;
 	};
@@ -37,6 +37,8 @@ namespace eng
 	static std::mutex networkMutex;
 	static std::atomic<bool> running = false;
 
+	static bool apiInitialized = false;
+
 	static std::thread::id networkThreadID;
 
 	static size_t clientID = 0;
@@ -47,10 +49,15 @@ namespace eng
 		{
 			Logger::CriticalError("Failed to initialize ENet!");
 		}
+
+		apiInitialized = true;
 	}
 
 	void NetworkManager::Quit()
 	{
+		if (!running)
+			return;
+
 		running = false;
 
 		if (networkThread->joinable())
@@ -77,6 +84,8 @@ namespace eng
 
 	std::shared_ptr<Client> NetworkManager::CreateClient()
 	{
+		Logger::Assert(apiInitialized, "Client creation : Network loop isn't running");
+
 		if (HasClient())
 		{
 			Logger::Error("Client is already running");
@@ -95,6 +104,8 @@ namespace eng
 
 	std::shared_ptr<Server> NetworkManager::CreateInternalServer()
 	{
+		Logger::Assert(apiInitialized, "Server creation : Network loop isn't running");
+
 		if (HasServer())
 		{
 			Logger::Error("Internal server is already running");
@@ -124,7 +135,7 @@ namespace eng
 			_serverNetEventsQueue.push(p);
 	}
 
-	void NetworkManager::OnRecieved(Packet& p)
+	void NetworkManager::OnReceived(Packet& p)
 	{
 		switch ((NetworkMessages)p.header.id)
 		{
@@ -134,17 +145,17 @@ namespace eng
 			{
 				size_t idShift = sizeof(size_t);
 				ClientRpcHeader header;
-				try
-				{
+				//try
+				//{
 					header = p.GetFromEnd<ClientRpcHeader>(idShift);
-				}
-				catch (...) {
-					netStats.packetsLost++;
-					Logger::Error("Lost a packet");
-					break;
-				}
+				//}
+				//catch (...) {
+					//netStats.packetsLost++;
+					//Logger::Error("Lost a packet");
+					//break;
+				//}
 
-				netStats.packetsRecieved++;
+				netStats.packetsReceived++;
 
 				if (HasClient())
 				{
@@ -157,19 +168,19 @@ namespace eng
 			if (HasClient())
 			{
 				size_t id;
-				try
-				{
+				//try
+				//{
 					id = p.PopFromEnd<size_t>();
-				}
-				catch (...)
-				{
-					netStats.packetsLost++;
-					Logger::Error("Lost a packet");
-					break;
-				}
+				//}
+				//catch (...)
+				//{
+					//netStats.packetsLost++;
+					//Logger::Error("Lost a packet");
+					//break;
+				//}
 
-				inetevent_reciever* reciever = NetworkRegistry<inetevent_reciever>::GetByID(id);
-				reciever->on_recieved(p);
+				inetevent_receiver* receiver = NetworkRegistry<inetevent_receiver>::GetByID(id);
+				receiver->on_received(p);
 			}
 			break;
 		default:

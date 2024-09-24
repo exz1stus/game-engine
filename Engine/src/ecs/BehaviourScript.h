@@ -1,5 +1,6 @@
 #pragma once
 #include "component_ref.h"
+#include "ecs/SystemManager.h"
 namespace eng
 {
 	class BehaviourScript
@@ -40,8 +41,10 @@ namespace eng
 			Logger::Log(id);
 			id.RemoveComponent<T>();
 		}
+	protected:
+		Entity GetEntityID() const { return id; }
 	private:
 		Entity id;
-		friend class Scene;
+		friend class ScriptSystem;
 	};
 }

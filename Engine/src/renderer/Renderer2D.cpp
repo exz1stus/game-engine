@@ -198,7 +198,7 @@ namespace eng
 		renderData.vbo->SetData(renderData.QuadVerticesPtrBase, dataSize);
 
 		renderData.shader->Bind();
-		renderData.shader->SetMat4("u_MVP", SceneManager::GetMainCamera()->GetViewProjectionMatrix());
+		renderData.shader->SetMat4("u_MVP", SceneManager::GetCurrentScene()->GetMainCamera()->GetViewProjectionMatrix());
 
 		for (size_t i = 0; i < renderData.TextureSlotsUsed; i++)
 		{

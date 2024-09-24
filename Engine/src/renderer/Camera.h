@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "ecs/CoreComponents.h"
+#include "ecs/components/TransformComponent.h"
 
 namespace eng
 {

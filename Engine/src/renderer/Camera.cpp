@@ -1,7 +1,7 @@
 #include "engpch.h"
 #include "Camera.h" 
 #include "renderer/RenderingEvents.h"
-#include "ecs/CoreComponents.h"
+#include "ecs/components/TransformComponent.h"
 #include "misc/Utilities.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -20,8 +20,8 @@ namespace eng
 		if (_projMode == CameraProjection::ORTHOGRAPHIC)
 		{
 			_projection = glm::ortho(left, right, bottom, top, -1.0f, 100.0f);
-			//float zoomFactor = 1.0f;
-			//_projection = glm::scale(_projection, glm::vec3(zoomFactor, zoomFactor, zoomFactor));
+			float zoomFactor = 2.5f;
+			_projection = glm::scale(_projection, glm::vec3(zoomFactor, zoomFactor, zoomFactor));
 		}
 		else
 		{

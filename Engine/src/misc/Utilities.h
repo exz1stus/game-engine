@@ -11,6 +11,8 @@ namespace eng
 		rotation *= glm::rotate(glm::mat4(1.0f), glm::radians(angles.x), { 1.0f, 0.0f, 0.0f })
 				* glm::rotate(glm::mat4(1.0f), glm::radians(angles.y), { 0.0f, 1.0f, 0.0f })
 				* glm::rotate(glm::mat4(1.0f), glm::radians(angles.z), { 0.0f, 0.0f, 1.0f });
+
+		return rotation;
 	}
 
 

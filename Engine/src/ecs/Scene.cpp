@@ -2,24 +2,22 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "CoreComponents.h"
-#include "ScriptComponent.h"
-#include "CameraComponent.h"
 #include "renderer/Renderer2D.h"
 #include "debug/imgui/ImguiManager.h"
 
+#include "physics/2d/components/Rb2DComponent.h"
 namespace eng
 {
-	static void RemoveScriptCallback(entt::registry& registry, Entity entity)
-	{
-		entity.GetComponent<ScriptComponent>().DestroyScripts();
-	}
-
 	static entt::observer camObserver;
 
 	void Scene::Init()
 	{
 		ImguiManager::AddMenu(this);
-		_registry.on_destroy<ScriptComponent>().connect<&RemoveScriptCallback>();
+
+		PhysWorldProperties physProps;
+		physProps.g = glm::vec2(0.0f, -9.81f);
+		_physWorld = std::make_shared<PhysWorld>(physProps);
+		
 		camObserver.connect(_registry, entt::collector.update<TransformComponent>().where<CameraComponent>());
 	}
 
@@ -27,43 +25,40 @@ namespace eng
 	{
 		return _registry.create();
 	}
+
 	void Scene::RemoveEntity(const Entity id)
 	{
 		_registry.destroy(id);
 	}
+
 	void Scene::Update()
 	{
+		PhysicsUpdate();
+
 		for (Entity entity : camObserver)
 		{
 			entity.GetComponent<CameraComponent>().UpdateCameraTransform(entity.GetComponent<TransformComponent>());
 		}
 		camObserver.clear();
+	}
 
-		auto view = _registry.view<ScriptComponent>();
+	void Scene::PhysicsUpdate()
+	{
+		_physWorld->PhysTick();
+
+		auto view = _registry.view<Rb2DComponent, TransformComponent>();
 
 		for (Entity entity : view)
 		{
-			auto& script = entity.GetComponent<ScriptComponent>();
+			auto tr = entity.GetComponentReactive<TransformComponent>();
+			auto pos = entity.GetComponent<Rb2DComponent>().GetPhysPosition();
+			auto rot = entity.GetComponent<Rb2DComponent>().GetPhysRotation();
 
-			if (!script.instantiated)
-			{
-				while (!script._scriptsToInstantiate.empty())
-				{
-					InstantiateFunctionPtr& func = script._scriptsToInstantiate.top();
-					auto instance = func(&script);
-					instance->id = entity;
-					instance->OnInit();
-					script._scriptsToInstantiate.pop();
-				}
-				script.instantiated = true;
-			}
-
-			for (const auto& [type, ptr] : script._scripts)
-			{
-				ptr->OnUpdate();
-			}
+			tr->position = { pos.x, pos.y, tr->position.z };
+			tr->rotation = { tr->rotation.x, tr->rotation.y, rot };
 		}
 	}
+
 	void Scene::Render()
 	{
 		auto view = _registry.view<TransformComponent, SpriteRendererComponent>();
@@ -78,14 +73,18 @@ namespace eng
 				sprite.GetRGBA(), sprite.texture);
 		}
 	}
+
+	void Scene::SetMainCamera(std::shared_ptr<Camera> cam)
+	{
+		_mainCamera = cam;
+	}
+
 	void Scene::DrawMenu()
 	{
 		SetMenuName("Scene Inspector");
 
 		auto view = _registry.view<TransformComponent>();
-		//ImGui::Text("asd");
 		ImGui::BeginListBox("##listbox 2", ImVec2(-FLT_MIN, -FLT_MIN/*5 * ImGui::GetTextLineHeightWithSpacing()*/));
-		//ImGui::BeginListBox("Entities");
 		for (Entity e : view)
 		{
 			ImGui::Text("Entity: %i", (int)e);

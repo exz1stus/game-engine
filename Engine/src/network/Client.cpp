@@ -13,18 +13,18 @@ namespace eng
 			Disconnect();
 	}
 
-	bool Client::Connect(const std::string& host, uint32_t port)
+	bool Client::Connect(const std::string& host, uint32_t port) const
 	{
 		_connection->Connect(host, port);
 		return _connection->IsConnected();
 	}
-	bool Client::Disconnect()
+	bool Client::Disconnect() const
 	{
 		_connection->Disconnect();
 		return !_connection->IsConnected();
 	}
 
-	void Client::OnPacketRecieved(Packet& packet)
+	void Client::OnPacketReceived(Packet& packet)
 	{
 		if (packet.header.id == (int)NetworkMessages::AssignIDToClient)
 		{
@@ -37,8 +37,8 @@ namespace eng
 			return;
 		}
 
-		//Logger::Log("Client : Recieved a packet of size {}", packet.header.size);
-		NetworkManager::OnRecieved(packet);
+		//Logger::Log("Client : Received a packet of size {}", packet.header.size);
+		NetworkManager::OnReceived(packet);
 	}
 
 	void Client::OnConnected(std::shared_ptr<IConnection> con)

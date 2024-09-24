@@ -12,6 +12,10 @@
 #include "network/NetworkManager.h"
 #include "input/Input.h"
 
+#include "ecs/SystemManager.h"
+
+#define ENG_GUI
+
 namespace eng
 {
 
@@ -22,7 +26,6 @@ namespace eng
 	}
 	void Application::Init()
 	{
-		//Logger::Init();
 		SubscribeStaticClasses();
 		ApplicationEvents::OnInit();
 	}
@@ -32,21 +35,25 @@ namespace eng
 		ApplicationEvents::OnInit += Logger::Init;
 		ApplicationEvents::OnInit += GameTime::Init;
 
-		if (_mode == RunningMode::GUIApplication)
-		{
-			ApplicationEvents::OnInit += RenderingAPI::Init;
-			ApplicationEvents::OnInit += Input::Init;
-			ApplicationEvents::OnInit += AssetManager::Init;
-			ApplicationEvents::OnInit += Renderer2D::Init;
-			ApplicationEvents::OnInit += ImguiManager::Init;
-			RenderingEvents::OnWindowClosed.Bind(&Application::Quit, this);
-		}
+		//if (_mode == RunningMode::GUIApplication)
+		//{
+#ifdef ENG_GUI
+		ApplicationEvents::OnInit += RenderingAPI::Init;
+		ApplicationEvents::OnInit += Input::Init;		//TODO
+		ApplicationEvents::OnInit += AssetManager::Init;
+		ApplicationEvents::OnInit += Renderer2D::Init;
+		ApplicationEvents::OnInit += ImguiManager::Init;
+		RenderingEvents::OnWindowClosed.Bind(&Application::Quit, this);
+#endif
+		//}
 
 		ApplicationEvents::OnInit += SceneManager::Init;
-		ApplicationEvents::OnInit += NetworkManager::Init;
-	
+		ApplicationEvents::OnInit += SystemManager::Init;
 
+#ifdef ENG_NETWORKING
+		ApplicationEvents::OnInit += NetworkManager::Init;
 		ApplicationEvents::OnQuit += NetworkManager::Quit;
+#endif
 	}
 
 	void Application::MainLoop()

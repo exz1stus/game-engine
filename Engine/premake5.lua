@@ -26,10 +26,12 @@ project "Engine"
 		"vendor/glm",
 		"vendor/imgui",
 		"vendor/stb_image",
-		"src/core",
-		"src",
+		"vendor/box2d/include",
 		"vendor/entt/single_include",
 		"vendor/enet/include",
+
+		"src/core",
+		"src",
 	}
 	libdirs{
 		"vendor"
@@ -41,6 +43,7 @@ project "Engine"
 		"opengl32.lib",
 		"glad",
 		"ImGui",
+		"Box2D",
 	}
 
 	filter "files:vendor/EnttLibrary/*.cpp"

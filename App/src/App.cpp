@@ -12,9 +12,11 @@
 #include "ecs/CameraComponent.h"
 
 #include "network/components/NetTransformComponent.h"
+#include "network/components/NetSpriteRenderer.h"
 #include "ecs/component_ref.h"
 #include "network/NetworkManager.h"
 
+#include "input/Input.h"
 
 eng::Application* eng::CreateApplication()
 {
@@ -50,26 +52,31 @@ Game::Game()
 
 	cam.AddComponent<TransformComponent>().position.z = -10.0f;
 	cam.AddComponent<CameraComponent>();
+	//cam.AddComponent<ScriptComponent>().AddScript<FreeFlyCameraController>();
 
-	Entity player;
-	player.AddComponent<TransformComponent>();
-	player.AddComponent<SpriteRendererComponent>().texture = texs[7];
-	player.GetComponent<TransformComponent>().scale = { 50.0f, 50.0f, 0.0f };
-	auto& scriptHodler = player.AddComponent<ScriptComponent>();
-	scriptHodler.AddScript<PlayerController>();
-	scriptHodler.AddScript<NetTransform>();
-	
+	Entity player1;
+	player1.AddComponent<TransformComponent>();
+	player1.AddComponent<SpriteRendererComponent>().texture = texs[8];
+	player1.GetComponent<TransformComponent>().scale = { 50.0f, 50.0f, 0.0f };
+	auto& scriptHodler1 = player1.AddComponent<ScriptComponent>();
+	scriptHodler1.AddScript<PlayerController>();
+	scriptHodler1.AddScript<NetTransform>();
+	scriptHodler1.AddScript<NetSpriteRenderer>();
+
 	Entity player2;
 	player2.AddComponent<TransformComponent>();
-	player2.AddComponent<SpriteRendererComponent>().texture = texs[8];
+	player2.AddComponent<SpriteRendererComponent>().texture = texs[2];
 	player2.GetComponent<TransformComponent>().scale = { 50.0f, 50.0f, 0.0f };
 	auto& scriptHodler2 = player2.AddComponent<ScriptComponent>();
 	scriptHodler2.AddScript<PlayerController>();
 	scriptHodler2.AddScript<NetTransform>();
+	scriptHodler2.AddScript<NetSpriteRenderer>();
 }
 
 void Game::Start()
 {
+	started = true;
+
 	Entity player = 1;
 	auto& controller = player.GetComponent<ScriptComponent>().GetScript<PlayerController>();
 
@@ -85,4 +92,11 @@ void Game::Update()
 {
 	if (!started)
 		Start();
+	
+	if (Input::GetKeyDown(KeyCode::KEY_0))
+	{
+		Entity player = 1;
+		auto& sprite = player.GetComponent<ScriptComponent>().GetScript<NetSpriteRenderer>();
+		*sprite.color = { 0.1f , 0.1f, 1.0f };
+	}
 }

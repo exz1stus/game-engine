@@ -5,6 +5,7 @@
 #include "renderer/Camera.h"
 #include "GameTime.h"
 #include "input/InputEvents.h"
+#include "input/Input.h"
 
 #include "misc/Utilities.h"
 
@@ -20,17 +21,15 @@ namespace eng
 	{
 		glm::vec3 movement = glm::vec3(0);
 
-		auto wind = glfwGetCurrentContext();
+		if (Input::GetKeyDown(KeyCode::KEY_W)) movement += transform.get().GetForward();
+		if (Input::GetKeyDown(KeyCode::KEY_S)) movement -= transform.get().GetForward();
+		if (Input::GetKeyDown(KeyCode::KEY_D)) movement += transform.get().GetRight();
+		if (Input::GetKeyDown(KeyCode::KEY_A)) movement -= transform.get().GetRight();
+		if (Input::GetKeyDown(KeyCode::KEY_SPACE)) movement += transform.get().GetUp();
+		if (Input::GetKeyDown(KeyCode::KEY_LEFT_SHIFT)) movement -= transform.get().GetUp();
 
-		if (glfwGetKey(wind, GLFW_KEY_W)) movement += transform.get().GetForward();
-		if (glfwGetKey(wind, GLFW_KEY_S)) movement -= transform.get().GetForward();
-		if (glfwGetKey(wind, GLFW_KEY_D)) movement += transform.get().GetRight();
-		if (glfwGetKey(wind, GLFW_KEY_A)) movement -= transform.get().GetRight();
-		if (glfwGetKey(wind, GLFW_KEY_SPACE)) movement += transform.get().GetUp();
-		if (glfwGetKey(wind, GLFW_KEY_LEFT_SHIFT)) movement -= transform.get().GetUp();
-
-		if (glfwGetKey(wind, GLFW_KEY_Q)) transform->rotation.z -= 100.0f*GameTime::GetDeltaTime();
-		if (glfwGetKey(wind, GLFW_KEY_E)) transform->rotation.z += 100.0f*GameTime::GetDeltaTime();
+		if (Input::GetKeyDown(KeyCode::KEY_Q)) transform->rotation.z -= 100.0f*GameTime::GetDeltaTime();
+		if (Input::GetKeyDown(KeyCode::KEY_E)) transform->rotation.z += 100.0f*GameTime::GetDeltaTime();
 
 		if (movement.x != 0 && movement.y != 0) movement = glm::normalize(movement);
 
@@ -44,18 +43,16 @@ namespace eng
 	void FreeFlyCameraController::CalculateRotation(float mouseX, float mouseY)
 	{
 		glm::vec3& cameraRot = transform->rotation;
-
-		static float lastX = 0.0f;
-		static float lastY = 0.0f;
-		float deltaX = mouseX - lastX;
-		float deltaY = lastY - mouseY;
-		lastX = mouseX;
-		lastY = mouseY;
+		
+		float deltaX = mouseX - lastMouseX;
+		float deltaY = lastMouseY - mouseY;
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
 
 		float yaw = deltaX * freeLookSensitivity;
 		float pitch = deltaY * freeLookSensitivity;
 
-		cameraRot.y -= yaw; //matrix rotate
+		cameraRot.y -= yaw;
 		cameraRot.x += pitch;
 
 		const float maxPitch = 89.0f;

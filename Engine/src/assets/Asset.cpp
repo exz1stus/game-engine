@@ -1,7 +1,6 @@
 #include "engpch.h"
 #include "Asset.h"
 #include "renderer/platform/opengl/Shader.h"
-#include "renderer/platform/opengl/Texture2D.h"
 
 namespace eng
 {

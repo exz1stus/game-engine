@@ -25,7 +25,7 @@ namespace eng
 			return _ptr;
 		}
 
-		scoped_data_holder<T,PtrType>& operator=(const T& value)
+		scoped_data_holder<T, PtrType>& operator=(const T& value)
 		{
 			_parent->set_silent(value);
 			return *this;
@@ -43,7 +43,7 @@ namespace eng
 		Event<> OnModified;
 	};
 
-	template<typename T>
+	template<typename T> requires std::copy_constructible<T>
 	class reactive_ptr
 	{
 	public:
@@ -95,9 +95,9 @@ namespace eng
 			return *_shared->_ptr;
 		}
 
-		void set(const T& newValue) const
+		void set(T&& newValue) const
 		{
-			*_shared->_ptr = newValue;
+			*_shared->_ptr = std::move(newValue);
 			_shared->OnModified();
 		}
 

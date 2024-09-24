@@ -21,6 +21,6 @@ void PlayerController::OnUpdate()
 	if (movement == glm::vec3(0))
 		return;
 
-	movement = glm::normalize(movement) * moveSpeed * (float)GameTime::GetDeltaTime();
-	transform.position.getsc() = transform.position.get() + movement;
+	movement = moveSpeed * (float)GameTime::GetDeltaTime() * glm::normalize(movement);
+	*transform.position = transform.position.get() + movement;
 }

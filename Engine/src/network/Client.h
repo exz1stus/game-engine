@@ -10,12 +10,12 @@ namespace eng
 	public:
 		Client();
 		~Client();
-		bool Connect(const std::string& host, uint32_t port);
-		bool Disconnect();
+		bool Connect(const std::string& host, uint32_t port) const;
+		bool Disconnect() const;
 		//void ServerCommand(Packet& packet);
 		std::shared_ptr<IConnection> GetConnection() const { return _connection; }
 	private:
-		void OnPacketRecieved(Packet& packet) override;
+		void OnPacketReceived(Packet& packet) override;
 		void OnConnected(std::shared_ptr<IConnection> con) override;
 		void OnDisconnected(std::shared_ptr<IConnection> con) override;
 

@@ -133,7 +133,7 @@ namespace eng
 	enum class MouseButton
 	{
 		Left,
-		Rigth,
+		Right,
 		Middle,
 		Button4,
 		Button5,

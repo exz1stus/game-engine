@@ -22,6 +22,10 @@
 #include "ecs/Entity.h"
 #include "ecs/CoreComponents.h"
 
+//----------input-----------//
+#include "input/Input.h"
+
 //-----------misc-----------//
 #include "GameTime.h"
+#include "misc/ApplicationVariables.h"
 

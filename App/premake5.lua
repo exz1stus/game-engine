@@ -20,6 +20,8 @@ project "App"
 		"%{wks.location}/Engine/src/core",
 		"%{wks.location}/Engine/vendor/glad",
 		"%{wks.location}/Engine/vendor/entt/single_include",
+		"%{wks.location}/Engine/vendor/box2d/include",
+
 		"%{IncludeDir.imgui}",
 		"%{wks.location}/Engine/vendor/enet/include",
 	}

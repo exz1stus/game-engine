@@ -13,7 +13,7 @@ namespace eng
 	protected:
 		virtual void OnConnected(std::shared_ptr<IConnection> con) = 0;
 		virtual void OnDisconnected(std::shared_ptr<IConnection> con) = 0;
-		virtual void OnPacketRecieved(Packet& packet) = 0;
+		virtual void OnPacketReceived(Packet& packet) = 0;
 
 		void AssignHostID(size_t id) { _hostID = id; }
 	};

@@ -18,6 +18,7 @@ project "Sandbox"
         "%{wks.location}/Engine/vendor/glm",
 		"%{wks.location}/Engine/vendor/entt/single_include",
 		"%{wks.location}/Engine/vendor/enet/include",
+		"%{wks.location}/Engine/vendor/box2d/include",
 	}
 
     filter "system:windows"

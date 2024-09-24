@@ -86,12 +86,14 @@ namespace eng
 	{
 		if (_window->IsClosed()) RenderingEvents::OnWindowClosed();
 		//TODO : remove
+
 		if (_window->GetKey(GLFW_KEY_ESCAPE))
 		{
 			isCentered = !isCentered;
 			if (isCentered) _window->DisableCursor();
 			else _window->EnableCursor();
 		}
+
 		glfwPollEvents();
 	}
 	void RenderingAPI::SwapBuffers()

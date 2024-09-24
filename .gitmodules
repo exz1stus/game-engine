@@ -20,3 +20,6 @@
 [submodule "Engine/vendor/enet"]
 	path = Engine/vendor/enet
 	url = https://github.com/zpl-c/enet.git
+[submodule "Engine/vendor/box2d"]
+	path = Engine/vendor/box2d
+	url = https://github.com/erincatto/box2d.git

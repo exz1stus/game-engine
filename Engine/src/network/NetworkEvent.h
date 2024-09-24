@@ -3,7 +3,6 @@
 #include "network/NetworkPacket.h"
 #include "network/NetworkManager.h"
 #include "network/NetworkRegistry.h"
-#include <stack>
 namespace eng
 {
 	struct ClientRpcHeader
@@ -11,21 +10,21 @@ namespace eng
 		size_t senderID;
 	};
 
-	class inetevent_reciever
+	class inetevent_receiver
 	{
 	public:
-		virtual void on_recieved(Packet& packet) = 0;
+		virtual void on_received(Packet& packet) = 0;
 	};
 
 	template<typename... Args>
-	class NetworkEvent : public Event<Args...>, inetevent_reciever
+	class NetworkEvent : public Event<Args...>, inetevent_receiver
 	{
 	public:
 		using EventListener = std::function<void(Args...)>;
 
 		NetworkEvent()
 		{
-			eventID = NetworkRegistry<inetevent_reciever>::AssignID(this);
+			eventID = NetworkRegistry<inetevent_receiver>::AssignID(this);
 		}
 		NetworkEvent(const EventListener& listener)
 			:Event<Args...>(listener)
@@ -34,7 +33,7 @@ namespace eng
 
 		~NetworkEvent()
 		{
-			NetworkRegistry<inetevent_reciever>::FreeID(eventID);
+			NetworkRegistry<inetevent_receiver>::FreeID(eventID);
 		}
 
 		void Invoke(Args... args) override
@@ -91,7 +90,7 @@ namespace eng
 			InvokeLocally(Deserialize<Args>(packet)...);
 		}
 
-		void on_recieved(Packet& packet) override
+		void on_received(Packet& packet) override
 		{
 			InvokeOnReceive(packet);
 		}

@@ -35,7 +35,7 @@ namespace eng
 		
 		static void AddNetworkEvent(NetworkMessage& msg);
 
-		static void OnRecieved(Packet& p);
+		static void OnReceived(Packet& p);
 
 		static size_t GetHostID();
 

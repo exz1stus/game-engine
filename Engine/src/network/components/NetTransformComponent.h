@@ -4,6 +4,8 @@
 #include "ecs/component_ref.h"
 namespace eng
 {
+	// TODO : to component, using system
+
 	struct NetTransform : public BehaviourScript
 	{
 		void OnInit() override;

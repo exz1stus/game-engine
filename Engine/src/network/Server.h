@@ -14,7 +14,7 @@ namespace eng
 	private:
 		void OnConnected(std::shared_ptr<IConnection> con) override;
 		void OnDisconnected(std::shared_ptr<IConnection> con) override;
-		void OnPacketRecieved(Packet& packet) override;
+		void OnPacketReceived(Packet& packet) override;
 
 		std::unordered_map<size_t, std::shared_ptr<IConnection>> _connections;
 	};

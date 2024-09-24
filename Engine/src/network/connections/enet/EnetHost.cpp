@@ -37,7 +37,7 @@ namespace eng
 			case ENET_EVENT_TYPE_RECEIVE:
 			{
 				Packet packet = Packet::DeserializePacket(event.packet->data, event.packet->dataLength);
-				OnPacketRecieved(packet);
+				OnPacketReceived(packet);
 				enet_packet_destroy(event.packet);
 				break;
 			}
